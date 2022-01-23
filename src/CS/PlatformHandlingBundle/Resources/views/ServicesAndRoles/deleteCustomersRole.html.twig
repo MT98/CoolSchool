@@ -1,0 +1,20 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Rôles - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Rôle</li>
+        {% if role is defined %}
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_services_roles_customers_role_delete', {'id': role.id}) }}"> Suppression de rôle clientèle </a></li>
+        {% endif %}
+{% endblock %}
+
+
+{% block animated_fade_in %}
+                   
+                    {{ include("CSPlatformHandlingBundle:ServicesAndRoles:formCustomersRole.html.twig") }}
+                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}

@@ -1,0 +1,11 @@
+cs_customers_platform:
+    resource: "@CSCustomersPlatformBundle/Resources/config/routing.yml"
+    prefix:   /
+
+cs_core:
+    resource: "@CSCoreBundle/Resources/config/routing.yml"
+    prefix:   /
+
+cs_platform_handling:
+    resource: "@CSPlatformHandlingBundle/Resources/config/routing.yml"
+    prefix:   /Administration

@@ -1,0 +1,17 @@
+/* TAF D'ici la fin du mois (01/12/2018)*/
+        X /*Changer l'entityType en ChoiceType */ 
+        /* Gerer la page de confirmation */
+        /* Gerer la desactivation, suppression, et activation */
+        /* Mettre en forme de sorte que les abonnements soit modifiable facilement et sans erreurs pour 
+        les administrateurs */
+        /* faire en sorte que les services gratuits ne soit pas selectionnable au niveau des modifs d'abonnements*/
+        /* Gerer les users de la plateforme clientéles */
+        /* Changer le mode initialisation de mot de passe à la premiere fois 
+        pour l'employee et pour les autres users */
+        /* implementer la page de validation d'ecole seulement routes->controller->view */
+        /* Gerer les drois d'acces */
+        /* Gerer les activités */
+        /* Gerer les taux d'utilisation de fonctionalités */
+        /* Si j'ai le temps affiner la recherche des listes avec des parametres ou conditions pertinentes */
+        /* Sij'ai le temps gerer l'affichage en mobile */
+        /*eviter l'autocomplétion pour certains champs de formulaires */

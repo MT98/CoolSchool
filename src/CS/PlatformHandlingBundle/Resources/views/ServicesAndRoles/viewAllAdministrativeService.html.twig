@@ -1,0 +1,115 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Services - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Service</li>
+  
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_services_roles_administrative_service_viewAll') }}"> Liste des services administratifs </a></li>
+      
+{% endblock %}
+
+
+{% block animated_fade_in %}
+                   
+                <div class="row">
+                        <div class="col-lg-11">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fa fa-align-justify"></i> Liste des services administratifs
+                                    <a href="{{path('cs_platform_handling_services_roles_administrative_service_add')}}" class="btn btn-sm btn-primary float-right">Ajouter un service </a>
+                                </div>
+                                <div class="card-block">
+                                    <table class="table table-bordered table-striped table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Nom</th>
+                                                <th>Code</th>
+                                                <th>Prix</th>
+                                                <th>Statut</th>
+                                                <th class="text-center"><i class="icon-settings"></i> </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if services is not empty %}
+                                                {% for service in services %}
+                                                        <tr>
+                                                                <td> {% if service.name is not null %} {{service.name}} {% else %} aucun {% endif %} </td>
+                                                                <td>  {% if service.code is not null %} {{service.code}} {% else %} aucun {% endif %} </td>
+                                                                <td>  {% if service.price is not null %} {{service.price}} € {% else %} aucun {% endif %} </td>
+                                                                <td> {% if service.published == true %} <span class="badge badge-success">Public</span> {% elseif service.published == false %} <span class="badge badge-warning">Non Public</span> {% endif %} et {% if service.isActive == true %} <span class="badge badge-success">Actif</span> {% else %} <span class="badge badge-danger">Non Actif</span> {% endif %}</td>
+                                                        
+                                                    
+                                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-link text-muted dropdown hidden-md-down">
+                                                            
+                                                                        <a class="nav-link nav-pill" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                                                            <i class="icon-settings"></i>
+                                                                        </a>
+                                                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                                                                            <a href="{{path('cs_platform_handling_services_roles_administrative_service_view', {'id': service.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-default"></i> Voir le service
+                                                                            </a>
+                                                                            <a href="{{path('cs_platform_handling_services_roles_administrative_service_update', {'id': service.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-warning"></i> Modifier le service
+                                                                            </a>
+                                                                            {% if service.published == true %}
+                                                                                {% if service.isActive == true %}
+                                                                                <a href="{{path('cs_platform_handling_services_roles_administrative_service_disable', {'id': service.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-danger"></i> Désactiver le service
+                                                                                </a>
+                                                                                {% elseif service.isActive == false %}
+                                                                                <a href="{{path('cs_platform_handling_services_roles_administrative_service_enable', {'id': service.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-success"></i> Activer le service
+                                                                                </a>
+                                                                                {% endif %}
+                                                                            {% elseif service.published == false %}
+                                                                                <a href="{{path('cs_platform_handling_services_roles_administrative_service_delete', {'id': service.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-danger"></i> Supprimer le service
+                                                                                </a>
+                                                                            {% endif %}
+                                                                            
+                                                                        </div> 
+                                                                    </button>
+                                                                </td>
+                                                        
+                                                        </tr>
+                                                {% endfor %}
+                                        {% else %}
+                                            <tr class="text-center">
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                        </tr>
+                                        {% endif %}   
+                                        </tbody>
+                                        
+                                    </table>
+                                    <nav>
+                                        <ul class="pagination">
+                                            <li class="page-item"><a class="page-link" href="#">Prev</a>
+                                            </li>
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">1</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/.col-->
+                    </div>                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}

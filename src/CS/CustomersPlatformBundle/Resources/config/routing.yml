@@ -1,0 +1,49 @@
+cs_customers_platform_homepage:
+    path:     /
+    defaults: { _controller: CSCustomersPlatformBundle:Default:index }
+
+
+# routes for school
+
+cs_customers_platform_school_add:
+    path:     /Administration/School/Add
+    defaults: { _controller: CSCustomersPlatformBundle:School:add }
+
+cs_customers_platform_school_update:
+    path:     /Administration/School/Update/{id}
+    defaults: { _controller: CSCustomersPlatformBundle:School:update }
+    requirements:
+        id: \d+
+
+cs_customers_platform_school_delete:
+    path:      /Administration/School/Delete/{id}
+    defaults:
+        _controller: CSCustomersPlatformBundle:School:delete
+    requirements:
+        id: \d+
+
+cs_customers_platform_school_disable:
+    path:      /Administration/School/Disable/{id}
+    defaults:
+        _controller: CSCustomersPlatformBundle:School:disable
+    requirements:
+        id: \d+
+
+cs_customers_platform_school_enable:
+    path:      /Administration/School/Enable/{id}
+    defaults:
+        _controller: CSCustomersPlatformBundle:School:enable
+    requirements:
+        id: \d+
+
+cs_customers_platform_school_viewAll:
+    path:      /Administration/School/View/
+    defaults:
+        _controller: CSCustomersPlatformBundle:School:viewAll
+
+cs_customers_platform_school_view:
+    path:      /Administration/School/View/{id}
+    defaults:
+        _controller: CSCustomersPlatformBundle:School:view
+    requirements:
+        id: \d+

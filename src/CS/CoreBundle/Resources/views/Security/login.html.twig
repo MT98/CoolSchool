@@ -1,0 +1,170 @@
+
+<!--
+ * GenesisUI - Bootstrap 4 Admin Template
+ * @version v1.8.1
+ * @link https://genesisui.com
+ * Copyright (c) 2017 creativeLabs Łukasz Holeczek
+ * @license Commercial
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="CoolSchool">
+    <meta name="author" content="Mohammed THIANDOUM">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,AngularJS,Angular,Angular2,jQuery,CSS,HTML,RWD,Dashboard,Vue,Vue.js,React,React.js">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
+
+    <title> {% block title %} CoolSchool {% endblock %}</title>
+
+    <!-- Icons -->
+    <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/simple-line-icons.css') }}" rel="stylesheet">
+
+    <!-- Main styles for this application -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+    <!-- Plugins and scripts required by this views -->
+ 
+    <script src="{{ asset('js/libs/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/libs/toastr.min.js') }}"></script>
+
+</head>
+
+<body class="app flex-row align-items-center">
+    <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card-group mb-0">
+                            <div class="card p-2">
+                                <div class="card-block">
+                                    {# affichage du message flashbag #}
+                                    {% for message in app.session.flashbag.get('infoSuccess') %}
+                                    <script>
+                                        $(function(){
+                                            toastr.success('{{message}}');
+                                        });
+                                    </script>
+                                    {% endfor %}
+                                    {% for message in app.session.flashbag.get('infoError') %}
+                                    <script>
+                                        $(function(){
+                                            toastr.error('{{message}}');
+                                        });
+                                    </script>
+                                    {% endfor %}
+
+                                    {# errors from isometrics spam bundle #}
+                                    {% if form.vars.errors is not empty %}
+                                        <div class="alert alert-danger">{{ form_errors(form) }}</div>
+                                    {% endif %}
+
+                                    {# errors from symfony login_check #}
+                                    {% if error %}
+                                        <div class="alert alert-danger">
+                                            {{ error.message }}
+                                        </div>
+                                    {% endif %}
+                                    <h1>Login</h1>
+                                    <p class="text-muted">Sign In to your account</p>
+                                    {#
+                                    <form action="{{ path('login_check_for_administration') }}" method="post">
+                                        <div class="input-group mb-1">
+                                            <span class="input-group-addon"><i class="icon-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control" placeholder="Username/Email" id="username" name="_username" value="{{ last_username }}">
+                                        </div>
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-addon"><i class="icon-lock"></i>
+                                            </span>
+                                            <input type="password" class="form-control" placeholder="Password" id="password" name="_password">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input type="submit" class="btn btn-primary px-2" value="Login">
+                                                <input type="hidden" name="_target_path" value="{{ url('cs_platform_handling_coolschool_team_employee_viewAll') }}">
+                                            </div>
+                                            <div class="col-6 text-right">
+                                                <button type="button" class="btn btn-link px-0">Forgot password?</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    #}
+
+                                    <form action="{{ path('login_for_administration') }}" method="post">
+                                        {% if form._username is defined %}
+                                            <div class="input-group mb-1">
+                                                <span class="input-group-addon"><i class="icon-user"></i>
+                                                </span>
+                                                {{ form_widget(form._username, {'attr': {'class': 'form-control', 'id': 'username', 'placeholder': 'Username/Email', 'value': last_username }}) }}
+                                            </div>
+                                       
+                                        {% endif %}
+
+                                        {% if form._password is defined %}
+                                            <div class="input-group mb-2">
+                                                <span class="input-group-addon"><i class="icon-lock"></i>
+                                                </span>
+                                                {{ form_widget(form._password, {'attr': {'class': 'form-control', 'id': 'password', 'placeholder': 'Password'}}) }}
+                                            </div> 
+                                        {% endif %}
+
+                                      {# {% if form._rememberMe is defined %}
+                                            <div class="form-group">
+                                                    <div class="checkbox text-center">
+                                                        <label for="remember_me">
+                                                            {{ form_widget(form._rememberMe, {'attr': {'id': 'remember_me' }}) }} Garder vos infos de connexion?
+                                                        </label>
+                                                    </div>
+                                            </div> 
+                                        {% endif %} #}
+                                        
+                    
+                                        <div class="row">
+                                            <div class="col-5">
+                                            {% if form._submit is defined %}
+                                                {{ form_widget(form._submit, {'label': 'Login', 'attr': {'class': 'btn btn-primary px-2', 'id': 'form_save', 'value': 'Login'}}) }}
+                                            {% endif %}
+                                            {% if form._targetPath is defined %}
+                                                {{ form_widget(form._targetPath, {'attr': {'class': 'btn btn-primary px-2', 'id': 'form_save', 'value': url('cs_platform_handling_coolschool_team_employee_viewAll') }}) }}
+                                            {% endif %}
+
+                                            {{ form_rest(form) }}
+                                            </div>
+                                            <div class="col-7 text-right">
+                                                <a href="{{path('forgot_credentials_for_administration')}}" class="btn btn-link px-0"><span class="code">Forgot Username/password?</span></a>
+                                            </div>
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="card card-inverse card-primary py-3 hidden-md-down" style="width:44%">
+                                <div class="card-block text-center">
+                                    <div>
+                                        <h2>Sign up</h2>
+                                        <p>Pour vous inscrire veuillez-nous contacter au +221780193927.</p>
+                                        <button type="button" class="btn btn-primary active mt-1">Contact us!</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    <!-- Bootstrap and necessary plugins -->
+    <script src="{{ asset('js/libs/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/libs/tether.min.js') }}"></script>
+    <script src="{{ asset('js/libs/bootstrap.min.js') }}"></script>
+
+
+
+</body>
+
+</html>

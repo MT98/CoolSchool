@@ -1,0 +1,20 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Equipe - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Equipe</li>
+        {% if employee is defined %}
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_coolschool_team_employee_disable', {'id': employee.id}) }}"> Désactivation de l'employé(e) </a></li>
+        {% endif %}
+{% endblock %}
+
+
+{% block animated_fade_in %}
+                   
+                    {{ include("CSPlatformHandlingBundle:CoolSchoolTeam:formEmployee.html.twig") }}
+                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}

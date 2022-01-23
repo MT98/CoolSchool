@@ -1,0 +1,336 @@
+{% use 'CSCustomersPlatformBundle:School:blockSchoolInfo.html.twig'%}
+{% use 'CSCustomersPlatformBundle:School:blockSchoolFormStep.html.twig'%}
+{% use 'CSCustomersPlatformBundle:School:blockCustomerUserFormStep.html.twig'%}
+
+<div class="row">
+    <div class="col-sm-9">
+
+        <div class="card">
+                <div class="card-header">
+                    {% if action == "add" %}
+                        <strong>Ajout d'école</strong>
+                    {% elseif action == "delete" %}
+                        <strong>Suppression d'école</strong>
+                    {% elseif action == "update" %}
+                        <strong>Modification d'école</strong>
+                    {% elseif action == "disable" %}
+                        <strong>Désactivation d'école</strong>
+                    {% elseif action == "enable" %}
+                        <strong>Réactivation d'école</strong>
+                    {% else %}
+                        <strong>Formulaire</strong>
+                    {% endif %}
+
+                </div>
+               
+                {{ form_start(form) }}
+                <div class="card-block">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span class="badge badge-primary text-center">Etapes</span> 
+                            <div class="callout callout-info">
+                                {% include '@CraueFormFlow/FormFlow/stepList.html.twig' %}
+                            </div>
+                        </div>
+                        
+
+                        <div class="col-md-8">
+                        
+                            {{ form_errors(form) }}
+
+                            {% if action == "add" %}
+
+
+                                    {% if flow.getCurrentStepNumber() == 1 %}
+
+                                            {{ block('schoolFormStep') }}
+
+                                    {% elseif flow.getCurrentStepNumber() == 2 %}
+                                            {% if form.customerUser.email is defined %}
+                                                <div class="form-group">
+                                                        <label for="form_customerUser_email" class="label">Email</label>
+                                                        {{ form_widget(form.customerUser.email, {'attr': {'class': 'form-control', 'id': 'form_customerUser_email', 'placeholder': 'Entrer l\'email de l\'administrateur'}}) }}
+                                                </div>
+                                            {% endif %}
+                                        
+                                        
+                                    {% elseif flow.getCurrentStepNumber() == 3 %}
+                                            
+                                        {{ block('customerUserFormStep') }}
+                            
+                                    {# on gère la partie confirmation des données #}
+                                    {% elseif flow.getCurrentStepNumber() == 4 and formData is defined %}
+                                            
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <i class="fa fa-check"></i>Infos sur l'école
+                                                </div>
+                                                <div class="card-block">
+                                                    {% if formData.school.logo is not null %}
+                                                            <div class="media"> 
+                                                                <div class="media-left">
+                                                                    {# On charge l'image à partir de la session #}
+                                                                    <img src="data:{{ formData.school.logo.getFileMimeType() }};base64,{{ formData.school.logo.getFileDataBase64Encoded() }}" alt="logo {{formData.school.acronym}}" class="media-object" style="width:150px; height: 150px;">
+                                                                    
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    {# voir au debut de page#}
+                                                                    {{ block('schoolInfo')}}
+                                                                </div>
+                                                            </div>
+                                                    {% else %}
+                                                        {# voir au debut de page#}
+                                                        {{ block('schoolInfo')}}
+                                                    {% endif %}
+                                                    
+                                                    
+                                                </div>
+                                            </div>
+
+
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <i class="fa fa-check"></i>Infos sur l'administrateur de l'école
+                                                </div>
+                                                <div class="card-block">
+                                                    <strong> Email </strong>: {{formData.customerUser.email}} <br/>
+                                                    <strong> Prénom </strong>: {{formData.customerUser.firstName}} <br/>
+                                                    <strong> Nom </strong>: {{formData.customerUser.lastName}} <br/>
+                                                    <strong> Téléphone </strong>: {{formData.customerUser.telephone}} <br/>
+                                        
+                                                </div>
+                                            </div>
+
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <i class="fa fa-check"></i>Abonnements
+                                                </div>
+                                                <div class="card-block">
+                                                    Pour un mois, l'école a accés gratuitement à tous les services de MarianeSchool.
+                                        
+                                                </div>
+                                            </div>
+
+                                    {% endif %}          
+
+                            {# formulaire de modification #}
+
+                            {% elseif action=="update" %}
+
+                                    {% if flow.getCurrentStepNumber() == 1 %}
+
+                                            {{ block('schoolFormStep') }}
+
+                                    {% elseif flow.getCurrentStepNumber() == 2 %}
+                                            {% if form.customerUser.email is defined %}
+                                                <div class="form-group">
+                                                        <label for="form_customerUser_email" class="label">Email</label>
+                                                        {{ form_widget(form.customerUser.email, {'attr': {'class': 'form-control', 'id': 'form_customerUser_email', 'placeholder': 'Entrer l\'email de l\'administrateur'}}) }}
+                                                </div>
+                                            {% endif %}
+                                        
+                                        
+                                    {% elseif flow.getCurrentStepNumber() == 3 %}
+                                            
+                                        {{ block('customerUserFormStep') }}
+
+            
+                                    {% elseif flow.getCurrentStepNumber() == 4 %}
+                                        {% if form.customersServices is defined %}
+                                            <div class="form-group">
+                                                    <label for="form_customersServices" class="label">Cochez les services auxquels l'école veut s'abonner </label>
+                                                    <br/>
+                                                    <span class="small text-muted"> Si un service est coché alors l'école s'y est déjà abonné </span>
+                                                    {{ form_widget(form.customersServices, {'attr': {'class': 'form-control', 'id': 'form_customersServices', 'placeholder':'Liste des services clientèles'}}) }}
+                                            </div>
+                                        {% endif %}
+                                    {% elseif flow.getCurrentStepNumber() == 5 and formData is defined %}
+
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <i class="fa fa-check"></i>Infos sur l'école
+                                                </div>
+                                                <div class="card-block">
+                                                    {% if formData.school.logo is not null %}
+                                                            <div class="media"> 
+                                                                <div class="media-left">
+
+                                                                    {% if formData.school.logo.file is not null %}
+                                                                    {# On charge l'image à partir de la session #}
+
+                                                                        <img src="data:{{ formData.school.logo.getFileMimeType() }};base64,{{ formData.school.logo.getFileDataBase64Encoded() }}" alt="logo {{formData.school.acronym}}" class="media-object" style="width:150px; height: 150px;">
+                                                                    
+                                                                    {% else %}
+                                                                    {# On charge l'image qui était disponible avant la modification #}
+                                                                        <img src="{{ asset(formData.school.logo.webPath) }}" alt="logo {{formData.school.acronym}}" class="media-object" style="width:150px; height: 150px;">
+                                                                    {% endif %}
+                                                                </div>
+                                                                <div class="media-body">
+                                                                    {# voir au debut de page#}
+                                                                    {{ block('schoolInfo')}}
+                                                                </div>
+                                                            </div>
+                                                    {% else %}
+                                                        {# voir au debut de page#}
+                                                        {{ block('schoolInfo')}}
+                                                    {% endif %}
+                                                    
+                                                    
+                                                </div>
+                                            </div>
+
+
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <i class="fa fa-check"></i>Infos sur l'administrateur de l'école
+                                                </div>
+                                                <div class="card-block">
+                                                    <strong> Email </strong>: {{formData.customerUser.email}} <br/>
+                                                    <strong> Prénom </strong>: {{formData.customerUser.firstName}} <br/>
+                                                    <strong> Nom </strong>: {{formData.customerUser.lastName}} <br/>
+                                                    <strong> Téléphone </strong>: {{formData.customerUser.telephone}} <br/>
+                                        
+                                                </div>
+                                            </div>
+
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <i class="fa fa-check"></i>Infos sur les abonnements de l'école
+                                                </div>
+                                                <div class="card-block">
+                                                    {% if formData.customersServices is not empty%}
+                                                        {% if initialSubscribedServices is not empty %}
+                                                         {# liste des nouveaux services auquels l'ecole s'est souscrit#}
+                                                            {% set countNew = 0 %}
+                                                            {% for service in formData.customersServices %}
+                                                                {% set found = false %}
+                                                                {% for initialService in initialSubscribedServices %}
+                                                                    {% if service.id == initialService[0] %}
+                                                                        {% set found = true %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                                
+                                                                {% if found == false %}
+                                                                    {% set countNew = countNew + 1%}
+                                                                    <div> <i class="fa fa-plus-square" style="color:green;"></i>  {{service.name}} </div>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            {% if countNew > 0 %}
+                                                                <div> <span class="small"> <strong>{{ countNew }} nouveau(x) abonnement(s) </strong></span> </div>
+                                                                <br/>
+                                                                <br/>
+                                                            {% endif %}
+
+                                                        {# liste des services auquels l'ecole s'etait souscrit et les maintient #}
+                                                            {% set countOld = 0 %}
+                                                            {% for service in formData.customersServices %}
+                                                                {% set found = false %}
+                                                                {% for initialService in initialSubscribedServices %}
+                                                                    {% if service.id == initialService[0] %}
+                                                                        {% set found = true %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+
+                                                                {% if found == true %}
+                                                                    {% set countOld = countOld + 1 %}
+                                                                    <div> <i class="fa fa-minus muted"></i>  {{service.name}} </div>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            {% if countOld > 0 %}
+                                                                <div> <span class="small"> <strong>{{ countOld }} abonnement(s) maintenu(s)</strong></span> </div>
+                                                                <br/>
+                                                                <br/>
+                                                            {% endif %}
+
+                                                        {# liste des services auquels l'ecole ne souscrit plus #}
+                                                            {% set countAbort = 0 %}
+                                                            {% for initialService in initialSubscribedServices %}
+                                                                {% set found = false %}
+                                                                {% for service in formData.customersServices %}
+                                                                    {% if service.id == initialService[0] %}
+                                                                        {% set found = true %}
+                                                                    {% endif %}
+                                                                {% endfor %}
+
+                                                               
+                                                                {% if found == false %}
+                                                                    {% set countAbort = countAbort + 1 %}
+                                                                    <div> <i class="fa fa-minus-square" style="color:red;"></i>  {{initialService[1]}} </div>
+                                                                {% endif %}
+                                                                {% if countAbort > 0 %}
+                                                                    <div> <span class="small"> <strong>{{ countAbort }} abonnement(s) annulé(s) </strong></span> </div>
+                                                                {% endif %}
+                                                                <br/>
+                                                                <br/>
+                                                            {% endfor %}
+                                                        {% else %}
+
+                                                            {# tous sont des nouveaux services auquels l'ecole s'est souscrit#}
+                                                            {% set countNew = 0 %}
+                                                            {% for service in formData.customersServices %}
+                                                                    {% set countNew = countNew + 1 %}
+                                                                    <div> <i class="fa fa-plus-square" style="color:green;"></i>  {{service.id}} </div>
+                                                            
+                                                            {% endfor %}
+                                                            {% if countNew > 0 %}
+                                                                    <div> <span class="small"> <strong>{{ countNew }} nouveau(x) abonnement(s) </strong> </span> </div>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% else %}
+                                                        {% if initialSubscribedServices is not empty %}
+                                                            {# tous sont des services auquels l'ecole ne souscrit plus#}
+                                                            {% set countAbort = 0 %}
+                                                            {% for initialService in initialSubscribedServices %}
+                                                                    {% set countAbort = countAbort + 1 %}
+                                                                    <div> <i class="fa fa-minus-square" style="color:red;"></i>  {{initialService[1]}} </div>
+                                                               
+                                                            {% endfor %}
+                                                            {% if countAbort > 0 %}
+                                                                    <div> <span class="small"> <strong>{{ countAbort }} abonnement(s) annulé(s) </strong></span> </div>
+                                                            {% endif %}
+                                                        {% else %}
+                                                            <h3> Toujours pas de services auxquels l'école souscrit!</h3>
+                                                        {% endif %}
+                                                    {% endif %}
+                                        
+                                                </div>
+                                            </div>
+
+                        
+                                            
+                                    {% endif %} 
+
+                            {% endif %} 
+
+
+                            {{ form_rest(form) }}
+
+                            
+                        </div>
+                    </div>
+                
+               </div>
+               <div class="card-footer">
+                    
+                    {% include '@CraueFormFlow/FormFlow/buttons.html.twig' with {
+                        craue_formflow_button_class_next: 'btn btn-primary',
+                        craue_formflow_button_class_back: 'btn btn-secondary',
+                        craue_formflow_button_class_reset: 'btn btn-danger',
+                        craue_formflow_button_class_finish: 'btn btn-success',
+                        craue_formflow_button_label_next: 'Suivant',
+                        craue_formflow_button_label_back: 'Précédent',
+                        craue_formflow_button_label_reset: 'Recommencer',
+                        craue_formflow_button_label_finish: 'Terminer',
+
+                    }
+                    %}
+                  
+               </div>
+               {{ form_end(form) }}
+            
+        </div>
+    </div>
+</div>
+
+
+

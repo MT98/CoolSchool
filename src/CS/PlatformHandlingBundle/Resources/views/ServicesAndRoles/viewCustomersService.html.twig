@@ -1,0 +1,69 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Services - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Service</li>
+        {% if service is defined %}
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_services_roles_customers_service_view', {'id': service.id}) }}"> Vue d'un service clientèle </a></li>
+        {% endif %}
+{% endblock %}
+
+
+{% block animated_fade_in %}
+
+<div class="row">
+    <div class="col-sm-9">
+
+        <div class="card">
+                <div class="card-header">
+                        <strong>Vue d'un service clientèle</strong>
+                </div>
+
+                <div class="card-block">
+                        <strong> Nom </strong>: {{service.name}} <br/>
+                        <strong> Code </strong>: {{service.code}} <br/>
+                        <strong> Statut </strong>: {% if service.isActive == true %} <span class="badge badge-success">Activé</span> {% elseif service.isActive == false %} <span class="badge badge-danger">Désactivé</span> {% endif %} <br/>
+                        <strong> Prix </strong>: {{service.price}} € <br/>
+                        <strong> {% if service.isActive == true %} Est {% else %} Etait {% endif %}rendu public </strong>: {% if service.published == true %} <span class="badge badge-success">Oui</span> {% elseif service.published == false %} <span class="badge badge-warning">Non</span> {% endif %} <br/>
+                        <strong> Description </strong>: {% if service.description is not null %} {{service.description}} {% else %} aucune {% endif %}<br/>
+
+                        <strong> Rôles </strong>: {% if service.roles is not empty %}
+                                        {% for role in service.roles %}
+                                        {{role.name}} {% if not loop.last %}, {% endif %}
+
+                                        {% endfor %}
+
+                                {% else %}
+                                        aucun
+
+                                {% endif %}
+                        
+                </div>
+                <span class="spacer-down"> </span>
+                <span class="spacer-down"> </span>
+                <div class="card-footer">                                        
+                            <a href="{{path('cs_platform_handling_services_roles_customers_service_update', {'id': service.id})}}" class="btn btn-sm btn-warning">Modifier</a>
+                                
+                               {% if service.published == true %}
+                                        {% if service.isActive == true %}
+                                               <a href="{{path('cs_platform_handling_services_roles_customers_service_disable', {'id': service.id})}}" class="btn btn-sm btn-danger">Désactiver</a>
+                                        {% elseif service.isActive == false %}
+                                                <a href="{{path('cs_platform_handling_services_roles_customers_service_enable', {'id': service.id})}}" class="btn btn-sm btn-success">Réactiver</a>
+                                        {% endif %}
+                                {% elseif service.published == false %}
+                                               <a href="{{path('cs_platform_handling_services_roles_customers_service_delete', {'id': service.id})}}" class="btn btn-sm btn-danger">Supprimer</a>
+                               {% endif %}                            
+                            
+                            <a class="btn btn-sm btn-secondary" href="{{path('cs_platform_handling_services_roles_customers_service_viewAll')}}"><i class="fa fa-dot-circle-o"></i> Voir la liste</a>
+                </div>
+        </div>
+
+    </div>
+</div>
+
+                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}

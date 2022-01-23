@@ -1,0 +1,313 @@
+<?php
+
+namespace CS\PlatformHandlingBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+
+/**
+ * CustomersService
+ *
+ * @ORM\Table(name="customers_service")
+ * @ORM\Entity(repositoryClass="CS\PlatformHandlingBundle\Repository\CustomersServiceRepository")
+ */
+class CustomersService
+{
+    
+    /**
+     * @ORM\OneToMany(targetEntity="CS\CustomersPlatformBundle\Entity\Subscription", cascade={"persist"}, mappedBy="customersService")
+     * Attribut stockant les abonnements au service
+     */
+   private $subscriptions;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="CS\PlatformHandlingBundle\Entity\CustomersRole", cascade={"persist"}, mappedBy="service")
+     */
+    private $roles;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255, unique=true)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255, unique=true)
+     */
+    private $code;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="published", type="boolean")
+     */
+    private $published;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="price", type="float")
+     */
+    private $price;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return CustomersService
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return CustomersService
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return CustomersService
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set published
+     *
+     * @param boolean $published
+     *
+     * @return CustomersService
+     */
+    public function setPublished($published)
+    {
+        $this->published = $published;
+
+        return $this;
+    }
+
+    /**
+     * Get published
+     *
+     * @return bool
+     */
+    public function getPublished()
+    {
+        return $this->published;
+    }
+
+    /**
+     * Set price
+     *
+     * @param float $price
+     *
+     * @return CustomersService
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->roles = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setIsActive(true);
+    }
+
+    /**
+     * Add role
+     *
+     * @param \CS\PlatformHandlingBundle\Entity\CustomersRole $role
+     *
+     * @return CustomersService
+     */
+    public function addRole(\CS\PlatformHandlingBundle\Entity\CustomersRole $role)
+    {
+        $this->roles[] = $role;
+
+        $role->setService($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove role
+     *
+     * @param \CS\PlatformHandlingBundle\Entity\CustomersRole $role
+     */
+    public function removeRole(\CS\PlatformHandlingBundle\Entity\CustomersRole $role)
+    {
+        $this->roles->removeElement($role);
+    }
+
+    /**
+     * Get roles
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return CustomersService
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Add subscription
+     *
+     * @param \CS\CustomersPlatformBundle\Entity\Subscription $subscription
+     *
+     * @return CustomersService
+     */
+    public function addSubscription(\CS\CustomersPlatformBundle\Entity\Subscription $subscription)
+    {
+        $this->subscriptions[] = $subscription;
+        $subscription->setCustomersService($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove subscription
+     *
+     * @param \CS\CustomersPlatformBundle\Entity\Subscription $subscription
+     */
+    public function removeSubscription(\CS\CustomersPlatformBundle\Entity\Subscription $subscription)
+    {
+        $this->subscriptions->removeElement($subscription);
+    }
+
+    /**
+     * Get subscriptions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSubscriptions()
+    {
+        return $this->subscriptions;
+    }
+}

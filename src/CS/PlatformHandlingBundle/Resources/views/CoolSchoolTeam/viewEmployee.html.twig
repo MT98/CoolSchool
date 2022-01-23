@@ -1,0 +1,79 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Equipe - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Equipe</li>
+        {% if employee is defined %}
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_coolschool_team_employee_add', {'id': employee.id}) }}"> Profil d'un employé(e) </a></li>
+        {% endif %}
+{% endblock %}
+
+
+{% block animated_fade_in %}
+
+<div class="row">
+    <div class="col-sm-9">
+
+        <div class="card">
+                <div class="card-header">
+                        <strong>Profil d'un employé(e)</strong>
+                </div>
+
+                <div class="card-block">
+                <div class="media">
+                        <div class="media-left">
+                        {# On vérifie qu'une image soit bien associée à l'annonce #}
+                        {% if employee.photo is not null %}
+                                <img src="{{ asset(employee.photo.webPath) }}" alt="{{ employee.photo.alt }}" class="media-object" style="width:150px; height: 150px;">
+                        {% endif %}
+                        </div>
+                        <div class="media-body">
+                                <h2 class="media-heading">{{employee.name }}</h2>
+                                <strong> Pays </strong>: <img src="{{ asset('img/flags/' ~ employee.country.url ) }}" alt="{{employee.country.alt}}" style="height:24px;"> {{employee.country.name}} <br/>
+                                <strong> Adresse </strong>: {{employee.address}} <br/>
+                                <strong> Statut </strong>: {% if employee.isActive == true %} <span class="badge badge-success">Activé</span> {% elseif employee.isActive == false %} <span class="badge badge-danger">Désactivé</span> {% endif %} et {% if employee.expired == true %} <span class="badge badge-danger">Expiré</span> {% elseif employee.expired == false %} <span class="badge badge-success">Non expiré</span> {% endif %} <br/>
+                        
+                                <strong> Email </strong>: {{employee.email}} <br/>
+                                <strong> Téléphone </strong>: {{employee.telephone}} <br/>
+                                <strong> Rôles </strong>: 
+                                {% if employee.works is not empty %}
+                                        {% for work in employee.works %}
+                                        {{work.name}} {% if not loop.last %}, {% endif %}
+
+                                        {% endfor %}
+
+                                {% else %}
+                                        aucun
+
+                                {% endif %}
+                        </div>
+                </div>
+                        
+
+                </div>
+                <span class="spacer-down"> </span>
+                <span class="spacer-down"> </span>
+                <div class="card-footer">                                        
+                            <a href="{{path('cs_platform_handling_coolschool_team_employee_update', {'id': employee.id})}}" class="btn btn-sm btn-warning">Modifier</a>
+                            {% if employee.isActive == true %}
+                                        {% if employee.expired == false %}
+                                               <a href="{{path('cs_platform_handling_services_roles_administrative_role_disable', {'id': employee.id})}}" class="btn btn-sm btn-danger">Désactiver</a>
+                                        {% elseif employee.expired == true %}
+                                                <a href="{{path('cs_platform_handling_services_roles_administrative_role_enable', {'id': employee.id})}}" class="btn btn-sm btn-success">Réactiver</a>
+                                        {% endif %}
+                                {% elseif employee.isActive == false %}
+                                               <a href="{{path('cs_platform_handling_services_roles_administrative_role_delete', {'id': employee.id})}}" class="btn btn-sm btn-danger">Supprimer</a>
+                               {% endif %}
+                            <a class="btn btn-sm btn-secondary" href="{{path('cs_platform_handling_coolschool_team_employee_viewAll')}}"><i class="fa fa-dot-circle-o"></i> Voir la liste</a>
+                </div>
+        </div>
+
+    </div>
+</div>
+
+                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}

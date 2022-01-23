@@ -1,0 +1,22 @@
+#services:
+#    cs_customers_platform.example:
+#        class: CS\CustomersPlatformBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+services:
+    cs_customers_platform.form.flow.registerSchool:
+        class: CS\CustomersPlatformBundle\Form\RegisterSchoolFlow
+        parent: craue.form.flow
+        arguments: ["@doctrine"]
+
+    cs_customers_platform.form.flow.updateSchool:
+        class: CS\CustomersPlatformBundle\Form\UpdateSchoolFlow
+        parent: craue.form.flow
+        arguments: ["@doctrine"]
+
+    cs_customers_platform.email.mailer:
+        class: CS\CustomersPlatformBundle\Email\Mailer
+        arguments: 
+            - "@mailer"
+            - {'customersUser': "%confirmationCustomersUserAccountLink%", 'forgotCredentialsForCustomersUser': "%forgotCredentialsForCustomersUser%"}
+            - "%mailingFrom%"

@@ -1,0 +1,144 @@
+
+<div class="row">
+    <div class="col-md-10 col-sm-11">
+
+        <div class="card">
+                <div class="card-header">
+                    {% if action == "add" %}
+                        <strong>Ajout d'un employé(e)</strong>
+                    {% elseif action == "disable" %}
+                        <strong>Suppression d'un employé(e)</strong>
+                    {% elseif action == "update" %}
+                        <strong>Modification d'un employé(e)</strong>
+                    {% elseif action == "enable" %}
+                        <strong>Réactivation d'un employé(e)</strong>
+                    {% elseif action == "delete" %}
+                        <strong>Suppression d'un employé(e)</strong>
+                    {% else %}
+                        <strong>Formulaire</strong>
+                    {% endif %}
+
+                </div>
+                {{ form_start(form) }}
+    
+                <div class="card-block">
+                        {{ form_errors(form) }}
+                
+
+                        <div class="row">
+                                    {% if form.firstName is defined %}
+                                    <div class="form-group col-md-6">
+                                            <label for="form_firstName">Prénom</label>
+                                            {{ form_widget(form.firstName, {'attr': {'class': 'form-control', 'id': 'form_firstName', 'placeholder': 'Entrer le prénom de l\'employé'}}) }}
+                                    </div>
+                                    {% endif %}
+
+                                    {% if form.lastName is defined %}
+                                    <div class="form-group col-md-6">
+                                            <label for="form_lastName">Nom</label>
+                                            {{ form_widget(form.lastName, {'attr': {'class': 'form-control', 'id': 'form_lastName', 'placeholder': 'Entrer le nom de l\'employé'}}) }}
+                                    </div>
+                                    {% endif %}
+
+                        </div>
+
+                        <div class="row">
+                                    {% if form.country is defined %}   
+                                    <div class="form-group col-md-6">
+                                            <label for="form_country">Pays</label>
+                                            {{ form_widget(form.country, {'attr': {'class': 'form-control', 'id': 'form_country', 'placeholder': 'Entrer le pays où il travaille'}}) }}
+
+                                    </div>
+                                    {% endif %}
+
+                                    {% if form.address is defined %}
+                                    <div class="form-group col-md-6">
+                                            <label for="form_address">Adresse</label>
+                                            {{ form_widget(form.address, {'attr': {'class': 'form-control', 'id': 'form_address', 'placeholder': 'Entrer son adresse'}}) }}
+                                            
+                                    </div>
+                                    {% endif %}
+                        </div>
+
+                        <div class="row">
+                                    {% if form.email is defined %}
+                                    <div class="form-group col-md-6">
+                                            <label for="form_email">Email</label>
+                                            {{ form_widget(form.email, {'attr': {'class': 'form-control', 'id': 'form_email', 'placeholder': 'Entrer l\'email de l\'employé'}}) }}
+                                    </div>
+                                    {% endif %}
+
+                                    {% if form.telephone is defined %}
+                                    <div class="form-group col-md-6">
+                                            <label for="form_telephone">Téléphone</label>
+                                            {{ form_widget(form.telephone, {'attr': {'class': 'form-control', 'id': 'form_telephone', 'placeholder': 'Entrer son numéro de téléphone'}}) }}
+                                    </div>
+                                    {% endif %}
+                        </div>
+
+                        <div class="row">
+                                    {% if form.works is defined %}
+                                    <div class="form-group col-md-6">
+                                            <label for="form_works">Rôle(s)</label>
+                                            {{ form_widget(form.works, {'attr': {'class': 'form-control', 'id': 'form_works', 'placeholder': 'Attribuer les rôles qu\'il jouera'}}) }}
+                                    </div>
+                                    {% endif %}
+
+                                    {% if form.photo is defined %}
+                                    <div class="form-group col-md-6">
+                                            <label for="form_photo">Photo</label>
+                                            {{ form_widget(form.photo, {'attr': {'class': 'form-control', 'id': 'form_photo', 'placeholder': 'Charger sa photo'}}) }}
+                                    </div>
+                                    {% endif %}
+                        </div>        
+                    
+                        
+
+                        {% if form.confirm is defined %}  
+                                {% if action == "disable" %}  
+                                  <p>Voulez-vous vraiment désactiver le compte de l'employé <em><i>{{employee.name}}</i></em>? <br>
+                                   
+                                
+                                  </p>
+                                {% elseif action == "enable" %}
+                                <p>Voulez-vous vraiment réactiver le compte de l'employé <em><i>{{employee.name}}</i></em>? <br>
+                                   
+                                
+                                  </p>
+                                {% elseif action == "delete" %}
+
+                                <p>Voulez-vous vraiment supprimer le compte de l'employé <em><i>{{employee.name}}</i></em>? <br>
+                                   
+                                
+                                  </p>
+                                {% endif%}
+
+                        {% endif %}
+                </div>
+                <div class="card-footer">
+                            {% if form.save is defined %}
+                            {{ form_widget(form.save, {'label': 'Valider', 'attr': {'class': 'btn btn-sm btn-primary', 'id': 'form_save'}}) }}
+                            {% endif %}
+                           
+                            {% if form.confirm is defined %}                  
+                                  <a href="{{path('cs_platform_handling_coolschool_team_employee_view', {'id': employee.id})}}" class="btn btn-sm btn-success">Voir le profil</a>
+                                  {% if action == "disable" %}
+                                  {{ form_widget(form.confirm, {'label': 'Désactiver', 'attr': {'class': 'btn btn-sm btn-danger'}}) }}
+                                  {% elseif action == "enable" %}
+                                  {{ form_widget(form.confirm, {'label': 'Réactiver', 'attr': {'class': 'btn btn-sm btn-success'}}) }}
+                                  {% elseif action == "delete" %}
+                                  {{ form_widget(form.confirm, {'label': 'Supprimer', 'attr': {'class': 'btn btn-sm btn-danger'}}) }}
+                                  {% endif %}
+                                  
+                            {% endif %}
+                            <a class="btn btn-sm btn-secondary" href="{{path('cs_platform_handling_coolschool_team_employee_viewAll')}}"><i class="fa fa-dot-circle-o"></i> Voir la liste</a>
+                </div>
+
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+        </div>
+
+    </div>
+</div>
+
+

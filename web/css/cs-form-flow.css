@@ -1,0 +1,56 @@
+/*.craue_formflow_buttons {
+	overflow: hidden;
+}
+
+.craue_formflow_buttons button {
+	float: right;
+}*/
+
+.label{
+    color: #20a8d8;
+}
+
+.craue_formflow_steplist{
+    text-align: left;
+    font-size: 14px;
+    padding-left: 0.8em;
+}
+
+
+/* Pour l'étape courante, on met un texte plus visible(weight, color) + logo pointeur */
+.craue_formflow_current_step{
+    font-weight: bold;
+    color: #20a8d8;
+}
+
+/*.craue_formflow_current_step::after{
+    content: ' \f104';
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight:bold;
+    text-decoration: inherit;
+}
+*/
+/* Pour les étapes précédentes réalisées, on met un texte (color) + logo done */
+.craue_formflow_done_step:after{
+    content: " \f046";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight:bold;
+    color: green;
+    text-decoration: inherit;
+}
+
+/* Pour les étapes précédentes sautées, on met un texte (color) + logo skip */
+.craue_formflow_skipped_step{
+    text-decoration: line-through;
+}
+.craue_formflow_skipped_step:after{
+    content: " \f096";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight:bold;
+    color: red;
+    text-decoration: inherit;
+}
+

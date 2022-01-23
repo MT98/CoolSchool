@@ -1,0 +1,26 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: CoolSchool
+    database_user: root
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: smtp.gmail.com
+    mailer_user: marianeschool@gmail.com
+    mailer_password: ProduireMesurerApprendre
+    mailer_auth_mode: login
+    mailer_port: 465
+    mailer_encryption: ssl
+    secret: 93a3c4b218202f4b9cab6888dd22c88aada1e69c
+
+    #parameters for links in order to confirm accounts
+    confirmationEmployeeAccountLink: http://localhost/CoolSchool/web/app_dev.php/Administration/Employee/ConfirmAccount/
+
+    #le nombre limite de fois qu'on peut se tromper successivement en s'authentifiant
+    maxAuthenticationErrors: 7
+
+    mailingFrom: marianeschool@gmail.com
+
+    #for retrieving credentials
+    forgotCredentialsForAdministration: http://localhost/CoolSchool/web/app_dev.php/Administration/Employee/ForgotCredentials/

@@ -1,0 +1,258 @@
+cs_platform_handling_homepage:
+    path:     /
+    defaults: { _controller: CSPlatformHandlingBundle:Default:index }
+
+
+# routes for administrative services
+cs_platform_handling_services_roles_administrative_service_add:
+    path:     /AdministrativeService/Add
+    defaults: { _controller: CSPlatformHandlingBundle:ServicesAndRoles:addAdministrativeService }
+
+cs_platform_handling_services_roles_administrative_service_update:
+    path:      /AdministrativeService/Update/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:updateAdministrativeService
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_administrative_service_delete:
+    path:      /AdministrativeService/Delete/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:deleteAdministrativeService
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_administrative_service_disable:
+    path:      /AdministrativeService/Disable/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:disableAdministrativeService
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_administrative_service_enable:
+    path:      /AdministrativeService/Enable/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:enableAdministrativeService
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_administrative_service_viewAll:
+    path:      /AdministrativeService/View/
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:viewAllAdministrativeService
+
+cs_platform_handling_services_roles_administrative_service_view:
+    path:      /AdministrativeService/View/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:viewAdministrativeService
+    requirements:
+        id: \d+
+
+# routes for administratives roles 
+
+
+cs_platform_handling_services_roles_administrative_role_add:
+    path:     /AdministrativeRole/Add
+    defaults: { _controller: CSPlatformHandlingBundle:ServicesAndRoles:addAdministrativeRole }
+
+cs_platform_handling_services_roles_administrative_role_update:
+    path:      /AdministrativeRole/Update/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:updateAdministrativeRole
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_administrative_role_delete:
+    path:      /AdministrativeRole/Delete/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:deleteAdministrativeRole
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_administrative_role_disable:
+    path:      /AdministrativeRole/Disable/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:disableAdministrativeRole
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_administrative_role_enable:
+    path:      /AdministrativeRole/Enable/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:enableAdministrativeRole
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_administrative_role_delete:
+    path:      /AdministrativeRole/Delete/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:deleteAdministrativeRole
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_administrative_role_viewAll:
+    path:      /AdministrativeRole/View/
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:viewAllAdministrativeRole
+
+cs_platform_handling_services_roles_administrative_role_view:
+    path:      /AdministrativeRole/View/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:viewAdministrativeRole
+    requirements:
+        id: \d+
+
+
+
+# routes for customers services 
+
+cs_platform_handling_services_roles_customers_service_add:
+    path:     /CustomersService/Add
+    defaults: { _controller: CSPlatformHandlingBundle:ServicesAndRoles:addCustomersService }
+
+cs_platform_handling_services_roles_customers_service_update:
+    path:      /CustomersService/Update/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:updateCustomersService
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_customers_service_delete:
+    path:      /CustomersService/Delete/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:deleteCustomersService
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_customers_service_disable:
+    path:      /CustomersService/Disable/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:disableCustomersService
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_customers_service_enable:
+    path:      /CustomersService/Enable/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:enableCustomersService
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_customers_service_viewAll:
+    path:      /CustomersService/View/
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:viewAllCustomersService
+
+cs_platform_handling_services_roles_customers_service_view:
+    path:      /CustomersService/View/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:viewCustomersService
+    requirements:
+        id: \d+
+
+# routes for customers roles 
+
+
+cs_platform_handling_services_roles_customers_role_add:
+    path:     /CustomersRole/Add
+    defaults: { _controller: CSPlatformHandlingBundle:ServicesAndRoles:addCustomersRole }
+
+cs_platform_handling_services_roles_customers_role_update:
+    path:      /CustomersRole/Update/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:updateCustomersRole
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_customers_role_delete:
+    path:      /CustomersRole/Delete/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:deleteCustomersRole
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_customers_role_disable:
+    path:      /CustomersRole/Disable/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:disableCustomersRole
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_customers_role_enable:
+    path:      /CustomersRole/Enable/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:enableCustomersRole
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_customers_role_delete:
+    path:      /CustomersRole/Delete/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:deleteCustomersRole
+    requirements:
+        id: \d+
+
+cs_platform_handling_services_roles_customers_role_viewAll:
+    path:      /CustomersRole/View/
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:viewAllCustomersRole
+
+cs_platform_handling_services_roles_customers_role_view:
+    path:      /CustomersRole/View/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:ServicesAndRoles:viewCustomersRole
+    requirements:
+        id: \d+
+
+# routes for coolschool team 
+
+cs_platform_handling_coolschool_team_employee_add:
+    path:     /Employee/Add
+    defaults: { _controller: CSPlatformHandlingBundle:CoolSchoolTeam:addEmployee }
+
+cs_platform_handling_coolschool_team_employee_update:
+    path:      /Employee/Update/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:CoolSchoolTeam:updateEmployee
+    requirements:
+        id: \d+
+
+cs_platform_handling_coolschool_team_employee_disable:
+    path:      /Employee/Disable/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:CoolSchoolTeam:disableEmployee
+    requirements:
+        id: \d+
+
+cs_platform_handling_coolschool_team_employee_enable:
+    path:      /Employee/Enable/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:CoolSchoolTeam:enableEmployee
+    requirements:
+        id: \d+
+
+cs_platform_handling_coolschool_team_employee_delete:
+    path:      /Employee/Delete/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:CoolSchoolTeam:deleteEmployee
+    requirements:
+        id: \d+
+
+cs_platform_handling_coolschool_team_employee_viewAll:
+    path:      /Employee/View/
+    defaults:
+        _controller: CSPlatformHandlingBundle:CoolSchoolTeam:viewEmployees
+
+cs_platform_handling_coolschool_team_employee_view:
+    path:      /Employee/View/{id}
+    defaults:
+        _controller: CSPlatformHandlingBundle:CoolSchoolTeam:viewEmployee
+    requirements:
+        id: \d+
+
+cs_platform_handling_coolschool_team_employee_confirmation:
+    path:    /Employee/ConfirmAccount/{confirmationToken}
+    defaults:
+        _controller: CSPlatformHandlingBundle:CoolSchoolTeam:confirm
+
+

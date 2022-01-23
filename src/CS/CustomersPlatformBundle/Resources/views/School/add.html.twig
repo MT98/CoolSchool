@@ -1,0 +1,26 @@
+{% extends "CSCustomersPlatformBundle::layout.html.twig" %}
+
+
+{% block title %}  Ecoles - {{parent()}} {% endblock %}
+
+{% block stylesheet %}
+        {{parent()}} 
+        <link href="{{ asset('css/cs-form-flow.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Ecole</li>
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_customers_platform_school_add') }}"> Ajout d'école </a></li>
+{% endblock %}
+
+
+
+{% block animated_fade_in %}
+                   
+                    {{ include("CSCustomersPlatformBundle:School:form.html.twig") }}
+                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}
+

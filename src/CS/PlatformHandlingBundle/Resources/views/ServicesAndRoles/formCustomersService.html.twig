@@ -1,0 +1,250 @@
+
+<div class="row">
+    <div class="col-sm-9">
+
+        <div class="card">
+                <div class="card-header">
+                    {% if action == "add" %}
+                        <strong>Ajout d'un service clientèle</strong>
+                    {% elseif action == "delete" %}
+                        <strong>Suppression d'un service clientèle</strong>
+                    {% elseif action == "update" %}
+                        <strong>Modification  d'un service clientèle</strong>
+                    {% elseif action == "disable" %}
+                        <strong>Désactivation d'un service clientèle</strong>
+                    {% elseif action == "enable" %}
+                        <strong>Activation d'un service clientèle</strong>
+                    {% else %}
+                        <strong>Formulaire</strong>
+                    {% endif %}
+
+                </div>
+                {{ form_start(form) }}
+                {{ form_errors(form) }}
+                <div class="card-block">
+                        {% if form.name is defined %}
+                        <div class="form-group">
+                                <label for="form_name">Nom</label>
+                                {{ form_widget(form.name, {'attr': {'class': 'form-control', 'id': 'form_name', 'placeholder': 'Entrer le nom du service'}}) }}
+                        </div>
+                        {% endif %}
+
+                        {% if form.code is defined %}   
+                        <div class="form-group">
+                                <label for="form_code">Code</label>
+                                {{ form_widget(form.code, {'attr': {'class': 'form-control', 'id': 'form_code', 'placeholder': 'Entrer le code du service'}}) }}
+
+                        </div>
+                        {% endif %}
+
+                        {% if form.description is defined %}
+                        <div class="form-group">
+                                <label for="form_description">Description</label>
+                                {{ form_widget(form.description, {'attr': {'class': 'form-control', 'id': 'form_description', 'rows': '5', 'placeholder': 'Décriver le service'}}) }}
+                                
+                        </div>
+                        {% endif %}
+
+                        {% if form.price is defined %}
+                        <div class="form-group">
+                                <label for="form_price">Prix</label>
+                                {{ form_widget(form.price, {'attr': {'class': 'form-control', 'id': 'form_price', 'placeholder': 'Entrer le prix mensuel du service'}}) }}
+                        </div>
+                        {% endif %}
+
+                        {% if form.published is defined %}
+                        <div class="form-group">
+                                <div class="checkbox">
+                                    <label for="form_published">
+                                        {{ form_widget(form.published, {'attr': {'id': 'form_published' }}) }} Publier le service?
+                                    </label>
+                                </div>
+                        </div>  
+                        {% endif %}
+
+                        {% if form.confirm is defined %}   
+                                {% if action == "delete" %} 
+                                  <p>Voulez-vous vraiment supprimer le service <em><i>{{service.name}}</i></em>? <br>
+                                   
+                                  {% if service.roles is not empty %}
+                                     Ainsi que les rôles associés :
+                                      {% for role in service.roles %}
+                                          {{role.name}} {% if not loop.last %}, {% endif %}
+                                      {% endfor %}
+                                  {% endif %}
+                                  </p>
+                                {% elseif action == "disable" %}
+
+                                    <p>Voulez-vous vraiment désactiver le service <em><i>{{service.name}}</i></em>? <br>
+                                   
+                                    {% if service.roles is not empty %}
+                                      Ainsi que les rôles associés :
+                                        {% for role in service.roles %}
+                                            {{role.name}} {% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    </p>
+                          
+                                {% elseif action == "enable" %}
+
+                                    <p>Voulez-vous vraiment ré-activer le service <em><i>{{service.name}}</i></em>? <br>
+                                       Si oui n'oubliez pas d'activer les rôles qui lui sont associés. 
+                                    </p>
+                                {% endif %}
+
+
+                        {% endif %}
+
+                    
+                </div>
+                <div class="card-footer">
+                            {% if form.save is defined %}
+                            {{ form_widget(form.save, {'label': 'Valider', 'attr': {'class': 'btn btn-sm btn-primary', 'id': 'form_save'}}) }}
+                            {% endif %}
+                           
+                            {% if form.confirm is defined %}                  
+                                  <a href="{{path('cs_platform_handling_services_roles_customers_service_view', {'id': service.id})}}" class="btn btn-sm btn-success">Voir le service</a>
+                                  {% if action == "delete" %}
+                                  {{ form_widget(form.confirm, {'label': 'Supprimer le service', 'attr': {'class': 'btn btn-sm btn-danger'}}) }}
+                                  {% elseif action == "disable" %}
+                                  {{ form_widget(form.confirm, {'label': 'Désactiver le service', 'attr': {'class': 'btn btn-sm btn-warning'}}) }}
+                                  {% elseif action == "enable" %}
+                                  {{ form_widget(form.confirm, {'label': 'Activer le service', 'attr': {'class': 'btn btn-sm btn-primary'}}) }}
+                                  {% endif %}
+                            {% endif %}
+                            <a class="btn btn-sm btn-secondary" href="{{path('cs_platform_handling_services_roles_customers_service_viewAll')}}"><i class="fa fa-dot-circle-o"></i> Voir la liste</a>
+                </div>
+
+                {{ form_rest(form) }}
+                {{ form_end(form) }}
+        </div>
+
+    </div>
+</div>
+
+
+
+
+{# 
+
+  {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+  
+  {{ form_errors(form) }}
+
+
+  {% if form.name is defined %}
+  <div class="form-group">
+    {{ form_label(form.name, "Nom: ", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+    {{ form_errors(form.name) }}
+
+    <div class="col-sm-10">
+      {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if form.code is defined %}
+  <div class="form-group">
+    {{ form_label(form.code, "Code: ", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+
+    {{ form_errors(form.code) }}
+
+    <div class="col-sm-10">
+      {{ form_widget(form.code, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+  {% endif %}
+
+
+
+
+
+  {% if form.description is defined %}
+  <div class="form-group">
+    {{ form_label(form.description, "Description:", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_errors(form.description) }}
+    <div class="col-sm-10">
+      {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+
+  {% endif %} 
+  
+  {% if form.price is defined %}
+  <div class="form-group">
+    {{ form_label(form.price, "Prix mensuel du service:", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_errors(form.price) }}
+    <div class="col-sm-10">
+      {{ form_widget(form.price, {'attr': {'class': 'form-control'}}) }}
+    </div>
+  </div>
+
+  {% endif %}   
+
+  {% if form.published is defined %}
+  <div class="form-group">
+    {{ form_label(form.published, "Publier le service ? ", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    {{ form_errors(form.published) }}
+    <div class="col-sm-10">
+      {{ form_widget(form.published) }}
+    </div>
+  </div>
+
+  {% endif %}                    
+
+
+  <br>
+  
+  {% if form.delete is defined %}
+    <div class="form-group">
+    <div class="col-sm-10">
+
+        
+          
+         <p>Voulez-vous vraiment supprimer le service <em><i>{{service.name}}</i></em>?</p>
+
+         <br>
+        <a href="{{path('cs_platform_handling_services_roles_customers_service_view', {'id': service.id})}}" class="btn btn-default">Retourner à la description du service</a>
+        {{ form_widget(form.delete, {'attr': {'class': 'btn btn-danger'}}) }}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if form.levels is defined %}
+ 
+  
+  <div class="form-group">
+    
+    <div class="col-sm-2">
+    {{ form_label(form.levels, "Niveau(x):", {'label_attr': {'class': 'col-sm-2 control-label'}}) }}
+    </div>
+
+    <div class="col-sm-10">
+
+    {{ form_widget(form.levels) }}
+    <br/>
+    <a href="#" id="add_level" class="btn btn-default">Ajouter un niveau</a>
+    </div>
+  </div> 
+
+  {% endif %}
+  
+    {% if form.save is defined %}
+      <hr>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+        <div class="pull-right">
+              {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+              <a href="{{path('cs_platform_handling_services_roles_customers_service_viewAll')}}" class="btn btn-default">Retourner à la liste </a>    
+
+        </div>
+        </div>
+      </div>
+    {% endif %}
+
+  {{ form_rest(form) }}
+
+  {{ form_end(form) }}
+#}
+

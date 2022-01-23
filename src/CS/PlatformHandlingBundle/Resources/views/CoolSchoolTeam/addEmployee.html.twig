@@ -1,0 +1,18 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Equipe - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Equipe</li>
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_coolschool_team_employee_add') }}"> Ajout d'un employé </a></li>
+{% endblock %}
+
+
+{% block animated_fade_in %}
+                   
+                    {{ include("CSPlatformHandlingBundle:CoolSchoolTeam:formEmployee.html.twig") }}
+                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}

@@ -1,0 +1,145 @@
+<?php
+
+namespace CS\CoreBundle\Services;
+
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Core\Event\AuthenticationFailureEvent;
+use CS\PlatformHandlingBundle\Entity\CoolSchoolEmployee;
+use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
+
+class AuthenticationEventListener
+{
+    private $mailer;
+    private $router;
+    private $doctrine;
+    private $dispatcher; 
+    private $user;
+    private $maxAuthenticationErrors;
+    private $mailingFrom;
+
+    public function __construct(\Swift_Mailer $mailer, \Symfony\Component\Routing\Router $router, \Doctrine\Bundle\DoctrineBundle\Registry $doctrine, \Symfony\Component\EventDispatcher\EventDispatcherInterface $dispatcher, $mailingFrom, $maxAuthenticationErrors)
+    {
+        $this->mailer = $mailer;
+        $this->router = $router;
+        $this->doctrine = $doctrine;
+        $this->dispatcher = $dispatcher;
+        $this->maxAuthenticationErrors = $maxAuthenticationErrors;
+        $this->mailingFrom = $mailingFrom;
+    }
+
+
+    /* les concernants la réussite des authentifications */
+    public function onSecurityInteractiveLogin(InteractiveLoginEvent $event)
+    {
+        /* On récupère les données de l'utilisateur connecté*/
+        $this->user = $event->getAuthenticationToken()->getUser();
+
+        if($this->user instanceof CoolSchoolEmployee)
+        {
+            /* on récupère l'utilisateur de la base données afin de procéder à des modifications */
+            $em = $this->doctrine->getEntityManager();
+            $employee = $em->getRepository('CSPlatformHandlingBundle:CoolSchoolEmployee')->find($this->user->getId());
+
+
+            /* on réactualise sa date de dernière connection */
+            $employee->setLastConnection(new \DateTime());
+            /* si le compteur d'echecs successifs de connexion depasse 0, le reinitialiser*/
+            if($employee->getAuthenticationErrorsCounter() > 0)
+            {
+                $employee->setAuthenticationErrorsCounter(0);
+            }
+
+            /* on met à jour la base de données */
+            $em->flush();
+
+            $this->dispatcher->addListener(KernelEvents::RESPONSE, array($this, 'onKernelSuccessResponseForAdministration'));   
+        }else
+        {
+            return;
+        }
+    }
+
+    public function onKernelSuccessResponseForAdministration(FilterResponseEvent $event)
+    {
+      /*  $roles = $this->token->getToken()->getRoles();
+
+        $rolesTab = array_map(function($role){
+            return $role->getRole();
+        }, $roles);
+
+        $this->logger->info(var_export($rolesTab, true));
+
+        if (in_array('ROLE_ADMIN', $rolesTab) || in_array('ROLE_SUPER_ADMIN', $rolesTab)) {
+            $route = $this->router->generate('backend_homepage');
+        } elseif (in_array('ROLE_CLIENT', $rolesTab)) {
+            $route = $this->router->generate('frontend_homepage');
+        } else {
+            $route = $this->router->generate('portal_homepage');
+        } */
+        $lastViewedPage = $this->user->getLastViewedPage();
+        if($lastViewedPage != null)
+        {
+            $event->getResponse()->headers->set('Location', $this->router->generate($lastViewedPage));
+        }else{
+            $event->getResponse()->headers->set('Location', $this->router->generate('cs_platform_handling_coolschool_team_employee_viewAll'));            
+        }
+        
+    }
+
+    /* les methodes concernant l'echec des authentifications */
+    public function onSecurityAuthenticationFailure(AuthenticationFailureEvent $event)
+    {
+        /* on récupère le token contenant des informations sur la personne qui tente de se connecter */
+        $token = $event->getAuthenticationToken();
+
+        /* on récupère le pare-feu qui gère cette authentification */
+        if($token->getProviderKey() == "main_for_administration")
+        {
+            /* On récupère le nom d'utilisateur qu'il a utilisé */
+            $username = $token->getUser();
+
+            $em = $this->doctrine->getEntityManager();
+            $employee = $em->getRepository('CSPlatformHandlingBundle:CoolSchoolEmployee')->loadUserByUsername($username);
+            
+            if($employee != null && $employee->getExpired()==false && $employee->isEnabled()==true){
+
+                /* On incrémente le nombre de fois qu'il y a eu d'erreurs successifs d'authentifications */
+                $employee->setAuthenticationErrorsCounter($employee->getAuthenticationErrorsCounter() + 1);
+
+                /* on met à jour la base de données */
+                $em->flush();
+
+                /* si c'est supérieur à la limite de sécurité, on envoie un email à l'utilisateur le conseillant de changer
+                de nom d'utilisateur*/
+                if($employee->getAuthenticationErrorsCounter() > $this->maxAuthenticationErrors)
+                {
+                    $this->sendEmail($this->mailingFrom, $employee->getEmail(), $employee->getAuthenticationErrorsCounter(), $username );
+                }
+            }
+
+            
+        }else
+        {
+            return;
+        }
+        return;
+        
+    }
+
+    /* for mailing */
+    public function sendEmail(String $from, String $email, int $counter, String $username)
+    {
+        $message = new \Swift_Message(
+            'Attention '.$username.' !',
+            "Il y a quelqu'un qui a tenté plus de ".$counter." fois de se connecter avec votre Username ".$username. " \n Heureusement, il ne connaît pas votre mot de passe. \n Pour plus de sureté nous cous conseillons de modifier votre nom d'utilisateur et d'utiliser l'option (Se connecter seulement avec mon nom d'utilisateur) au niveau du paramétrage de votre compte. \n Merci, nous veillons à votre sécurité!"
+        );
+
+        $message
+        ->addTo($email) 
+        ->addFrom($from);
+
+        $this->mailer->send($message);
+    }
+         
+}

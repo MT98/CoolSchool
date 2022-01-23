@@ -1,0 +1,31 @@
+cs_core_homepage:
+    path:     /
+    defaults: { _controller: CSCoreBundle:Core:index }
+
+
+
+#this routes below handles security (login, logout, ...)
+login_for_administration:
+    path:    /Administration/login
+    defaults:
+        _controller:    CSCoreBundle:Security:loginForAdministration
+
+login_check_for_administration:
+    path:    /Administration/login_check
+
+logout_for_administration:
+    path:    /Administration/logout
+
+
+forgot_credentials_for_administration:
+    path:   /Administration/forgot_credentials
+    defaults:
+        _controller:    CSCoreBundle:Security:forgotForAdministration
+
+
+process_credentials_changing_for_administration:
+    path:   /Administration/Employee/ForgotCredentials/{what}/{code}
+    defaults:
+        _controller:    CSCoreBundle:Security:changeCredentialsForAdministration
+    requirements:
+        what: password|username

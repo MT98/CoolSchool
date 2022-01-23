@@ -1,0 +1,20 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Services - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Service</li>
+        {% if service is defined %}
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_services_roles_customers_service_delete', {'id': service.id}) }}"> Suppression de service clientèle </a></li>
+        {% endif %}
+{% endblock %}
+
+
+{% block animated_fade_in %}
+                   
+                    {{ include("CSPlatformHandlingBundle:ServicesAndRoles:formCustomersService.html.twig") }}
+                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}

@@ -1,0 +1,118 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Rôles - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Rôles</li>
+  
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_services_roles_customers_role_viewAll') }}"> Liste des rôles clientèles </a></li>.
+
+      
+{% endblock %}
+
+
+{% block animated_fade_in %}
+                   
+                <div class="row">
+                        <div class="col-lg-11">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fa fa-align-justify"></i> Liste des rôles clientèles
+                                    <a href="{{path('cs_platform_handling_services_roles_customers_role_add')}}" class="btn btn-sm btn-primary float-right">Ajouter un rôle </a>
+                                </div>
+                                <div class="card-block">
+                                    <table class="table table-bordered table-striped table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Service</th>
+                                                <th>Nom</th>
+                                                <th>Code</th>
+                                                <th>Nombre d'acteurs</th>
+                                                <th> Statut </th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if roles is not empty %}
+                                                {% for role in roles %}
+                                                        <tr>
+                                                                <td> {% if role.service.name is not null %} {{role.service.name}} {% else %} aucun {% endif %} </td>
+                                                                <td>  {% if role.name is not null %} {{role.name}} {% else %} aucun {% endif %} </td>
+                                                                <td>  {% if role.code is not null %} {{role.code}} {% else %} aucun {% endif %} </td>
+                                                                <td> {% if role.foroneuser == true %} <span class="badge badge-success">Un seul</span> {% elseif role.foroneuser == false %} <span class="badge badge-warning">Plusieurs</span> {% endif %} </td>
+                                                                <td> {% if role.published == true %} <span class="badge badge-success">Public</span> {% elseif role.published == false %} <span class="badge badge-warning">Non Public</span> {% endif %} et {% if role.isActive == true %} <span class="badge badge-success">Actif</span> {% else %} <span class="badge badge-danger">Non Actif</span> {% endif %}</td>
+
+                                        
+                                                        <td class="text-center">
+                                                                    <button type="button" class="btn btn-link text-muted dropdown hidden-md-down">
+                                                            
+                                                                        <a class="nav-link nav-pill" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                                                            <i class="icon-settings"></i>
+                                                                        </a>
+                                                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                                                                            <a href="{{path('cs_platform_handling_services_roles_customers_role_view', {'id': role.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-default"></i> Voir le rôle
+                                                                            </a>
+                                                                            <a href="{{path('cs_platform_handling_services_roles_customers_role_update', {'id': role.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-warning"></i> Modifier le rôle
+                                                                            </a>
+                                                                            {% if role.published == true %}
+                                                                                {% if role.isActive == true %}
+                                                                                <a href="{{path('cs_platform_handling_services_roles_customers_role_disable', {'id': role.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-danger"></i> Désactiver le rôle
+                                                                                </a>
+                                                                                {% elseif role.isActive == false %}
+                                                                                <a href="{{path('cs_platform_handling_services_roles_customers_role_enable', {'id': role.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-success"></i> Réactiver le rôle
+                                                                                </a>
+                                                                                {% endif %}
+                                                                            {% elseif role.published == false %}
+                                                                                <a href="{{path('cs_platform_handling_services_roles_customers_role_delete', {'id': role.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-danger"></i> Supprimer le rôle
+                                                                                </a>
+                                                                            {% endif %}
+                                                                            
+                                                                        </div> 
+                                                                    </button>
+                                                                </td>
+                                                        
+                                                        </tr>
+                                                {% endfor %}
+                                        {% else %}
+                                            <tr class="text-center">
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+</tr>
+                                        {% endif %}   
+                                        </tbody>
+                                        
+                                    </table>
+                                    <nav>
+                                        <ul class="pagination">
+                                            <li class="page-item"><a class="page-link" href="#">Prev</a>
+                                            </li>
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">1</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/.col-->
+                    </div>                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}

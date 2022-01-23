@@ -1,0 +1,186 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Equipes - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Equipes</li>
+  
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_coolschool_team_employee_viewAll') }}"> Liste des employés </a></li>.
+
+      
+{% endblock %}
+
+
+{% block animated_fade_in %}
+                   
+                <div class="row">
+                        <div class="col-lg-11">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="fa fa-align-justify"></i> Liste des employés
+                                    <a href="{{path('cs_platform_handling_coolschool_team_employee_add')}}" class="btn btn-sm btn-primary float-right">Ajouter un employé </a>
+                                </div>
+                                <div class="card-block">
+                                   
+                                    <table class="table table-hover table-outline mb-0 hidden-sm-down spacer-down">
+                                        <thead class="thead-default">
+                                            <tr>
+                                                <th class="text-center"><i class="icon-people"></i>
+                                                </th>
+                                                <th>Nom</th>
+                                                <th class="text-center">Pays</th>
+                                                <th class="text-center">Rôles</th>
+                                                <th class="text-center">Email</th>
+                                                <th class="text-center">Statut</th> 
+                                                <th class="text-center">Activité</th>                                                
+                                                <th class="text-center"><i class="icon-settings"></i>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if employees is not empty %}
+                                                {% for employee in employees %}
+                                                        <tr>
+                                                <td class="text-center">
+                                                    <div class="avatar">
+                                                        <img src="{{ asset(employee.photo.webPath)}}" class="img-avatar" alt="{{ employee.photo.alt }}">
+                
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div> {{employee.name}} </div>
+                                                
+                                                </td>
+                                                <td class="text-center">
+                                                    <img src="{{ asset('img/flags/' ~ employee.country.url ) }}" alt="{{employee.country.alt}}" style="height:24px;">
+                                                    <div class="small text-muted"> {{employee.country.name}} </div>
+                                                </td>
+                                                <td class="text-center">
+                                                    {% if employee.works is not empty %}
+                                                        {% for work in employee.works %}
+                                                                
+                                                            {{work.name}} {% if not loop.last %}, {% endif %}
+                                                            
+                                                        {% endfor %}
+
+                                                    {% endif %}
+                                                </td>
+                                                <td class="text-center">
+                                                    <div> {{employee.email}} </div>                                                    
+                                                </td>
+                                                <td class="text-center">
+                                                   {% if employee.isActive == true %} <span class="badge badge-success">Activé</span> {% elseif employee.isActive == false %} <span class="badge badge-danger">Désactivé</span> {% endif %} et <br/> {% if employee.expired == true %} <span class="badge badge-danger">Expiré</span> {% elseif employee.expired == false %} <span class="badge badge-success">Non expiré</span> {% endif %} <br/>
+                                                </td>
+                                                <td>
+                                                    {% if employee.lastConnection is not null %}
+                                                        {% set difference = date("now").diff(date(employee.lastConnection)) %}
+        
+                                                        {% set days = difference|date('%d') %}
+                                                        {% if days == 1 %}
+                                                            <div class="small text-muted">Vu il y a</div>
+                                                            <strong>{{days}} jour </strong>
+                                                        {% elseif days > 1 %}
+                                                            <div class="small text-muted">Vu il y a</div>
+                                                            <strong>{{days}} jours </strong>
+                                                        {% else %}
+                                                               {% set hours = difference|date('%H') %}  
+                                                               {% if hours == 1 %}
+                                                                    <div class="small text-muted">Vu il y a</div>
+                                                                    <strong>{{hours}} heure </strong>
+                                                                {% elseif hours > 1 %}
+                                                                    <div class="small text-muted">Vu il y a</div>
+                                                                    <strong>{{hours}} heures </strong>
+                                                                {% else %} 
+                                                                    {% set mins = difference|date('%i') %}   
+                                                                    <div class="small text-muted">Vu il y a</div>
+                                                                    <strong>{{mins}} minutes </strong>
+                                                                {% endif %}
+
+                                                        {% endif %}
+                                                        
+                                                    {% else %}
+                                                            <strong>Jamais vu</strong>
+                                                    {% endif %}
+
+                                                </td>
+                                              
+                                                <td class="text-center">
+                                                                    <button type="button" class="btn btn-link text-muted dropdown hidden-md-down">
+                                                            
+                                                                        <a class="nav-link nav-pill" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                                                                            <i class="icon-settings"></i>
+                                                                        </a>
+                                                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg">
+                                                                            <a href="{{path('cs_platform_handling_coolschool_team_employee_view', {'id': employee.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-default"></i> Voir l'employé(e)
+                                                                            </a>
+                                                                            <a href="{{path('cs_platform_handling_coolschool_team_employee_update', {'id': employee.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-warning"></i> Modifier l'employé(e)
+                                                                            </a>
+                                                                            {% if employee.isActive == true %}
+                                                                                {% if employee.expired == false %}
+                                                                                <a href="{{path('cs_platform_handling_coolschool_team_employee_disable', {'id': employee.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-danger"></i> Désactiver l'employé(e)
+                                                                                </a>
+                                                                                {% elseif employee.expired == true %}
+                                                                                <a href="{{path('cs_platform_handling_coolschool_team_employee_enable', {'id': employee.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-success"></i> Activer l'employé(e)
+                                                                                </a>
+                                                                                {% endif %}
+                                                                            {% elseif employee.isActive == false %}
+                                                                                <a href="{{path('cs_platform_handling_coolschool_team_employee_delete', {'id': employee.id})}}" class="dropdown-item">
+                                                                                <i class="icon-user-follow text-danger"></i> Supprimer l'employé(e)
+                                                                                </a>
+                                                                            {% endif %}
+                                                                            
+                                                                        </div> 
+                                                                    </button>
+                                                                </td>
+                                            </tr>
+                                                       
+                                                {% endfor %}
+                                        {% else %}
+                                            <tr class="text-center">
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                                <td> Liste vide ! </td>
+                                            </tr>
+                                        {% endif %} 
+
+                        
+                                        </tbody>
+                                    </table>
+                                    
+                                    <br>
+                                
+                                    <nav>
+                                        <ul class="pagination">
+                                            <li class="page-item"><a class="page-link" href="#">Prev</a>
+                                            </li>
+                                            <li class="page-item active">
+                                                <a class="page-link" href="#">1</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">2</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">3</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">4</a>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/.col-->
+                    </div>                   
+                    
+                    <!--/.row-->
+                    <span class="spacer-down"> </span>
+
+{% endblock %}

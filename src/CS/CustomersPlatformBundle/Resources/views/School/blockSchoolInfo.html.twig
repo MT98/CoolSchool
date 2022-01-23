@@ -1,0 +1,39 @@
+{% block schoolInfo %}
+    <strong> Nom </strong>: {{formData.school.name}} <br/>
+    <strong> Acronyme </strong>: {{formData.school.acronym}} <br/>
+    <strong> Pays </strong>: <img src="{{ asset('img/flags/' ~ formData.school.country.url ) }}" alt="{{formData.school.country.alt}}" style="height:24px;"> {{formData.school.country.name}} <br/>
+    <strong> Adresse </strong>: {{formData.school.address}} <br/>
+    <strong> Type </strong>: <span class="badge badge-success"> {{formData.school.type|upper}} </span><br/>
+    <strong> Niveau(x) </strong>: 
+                                                    
+            {% for level in formData.school.levels %}
+            {% if level == "primary" %}
+                <span class="badge badge-warning">
+                    {{'primaire'|upper}}
+                </span>
+
+            {% elseif level == "school"%}
+               <span class="badge badge-primary">
+                    {{'collège'|upper}}
+                </span>
+                                                                
+            {% elseif level == "high-school"%}
+                 <span class="badge badge-success">
+                    {{'lycée'|upper}}
+                </span>
+            {% elseif level == "university"%}
+                <span class="badge badge-danger">
+                    {{'université'|upper}}
+                </span>
+            {% else %}
+                <span class="badge badge-primary">
+                    {{level|upper}}
+                </span>
+            {% endif %}
+            {% if not loop.last %}, {% endif %}
+
+            {% endfor %}
+            <br/>
+            <strong> Description </strong>: {{formData.school.description}} <br/>
+
+{% endblock %}

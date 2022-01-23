@@ -1,0 +1,90 @@
+{% block schoolFormStep %}
+                                            {% if form.school.country is defined %}
+                                                <div class="form-group">
+                                                        <label for="form_school_country" class="label">Pays</label>
+                                                        {{ form_widget(form.school.country, {'attr': {'class': 'form-control', 'id': 'form_school_country', 'placeholder': 'Dans quel pays se trouve l\'école?'}}) }}
+                                                </div>
+                                            {% endif %}
+                                            {% if form.school.name is defined %}
+                                                <div class="form-group">
+                                                        <label for="form_school_name" class="label">Nom</label>
+                                                        {{ form_widget(form.school.name, {'attr': {'class': 'form-control', 'id': 'form_school_name', 'placeholder': 'Entrer le nom de l\'école'}}) }}
+                                                </div>
+                                            {% endif %}
+
+                                            {% if form.school.acronym is defined %}
+                                                <div class="form-group">
+                                                        <label for="form_school_acronym" class="label">Acronyme</label>
+                                                        {{ form_widget(form.school.acronym, {'attr': {'class': 'form-control', 'id': 'form_school_acronym', 'placeholder': 'Entrer l\'acronyme de l\'école'}}) }}
+                                                </div>
+                                            {% endif %}
+
+                                            {% if form.school.type is defined %}
+                                            <div class="form-group">
+                                                        <label class="label"> De quel type d'école s'agit-il? </label>
+                
+                                                        <br/>
+                                                        <label for="form_school_type_0" class="radio-inline">
+                                                            {{ form_widget(form.school.type[0], {'attr': {'id': 'form_school_type_0' }}) }} Privée
+                                                        </label>
+                                                        <br/>
+                                                        <label for="form_school_type_1" class="radio-inline">
+                                                            {{ form_widget(form.school.type[1], {'attr': {'id': 'form_school_type_1' }}) }} Publique
+                                                        </label>
+                                                
+                                            </div>  
+                                            {% endif %}
+
+                                            {% if form.school.levels is defined %}
+                                            <div class="form-group">
+                                                        <label class="label">Quel(s) est/sont le(s) niveau(x) de l'école? </label>
+
+                                                                            
+                                                        <div class="checkbox">
+                                                        <label for="form_school_level_0">
+                                                            {{ form_widget(form.school.levels[0], {'attr': {'id': 'form_school_level_0' }}) }} Primaire 
+                                                        </label>
+                                                        </div>
+                                                    
+                                                        <div class="checkbox">
+                                                        <label for="form_school_level_1">
+                                                        {{ form_widget(form.school.levels[1], {'attr': {'id': 'form_school_level_1' }}) }} Collège 
+                                                        </label>
+                                                        </div>
+
+                                                        <div class="checkbox">
+                                                        <label for="form_school_level_2">
+                                                            {{ form_widget(form.school.levels[2], {'attr': {'id': 'form_school_level_2' }}) }} Lycée 
+                                                        </label>
+                                                        </div>
+
+                                                        <div class="checkbox">
+                                                        <label for="form_school_level_3">
+                                                            {{ form_widget(form.school.levels[3], {'attr': {'id': 'form_school_level_3' }}) }} Université 
+                                                        </label>
+                                                        </div>
+                                                
+                                            </div>  
+                                            {% endif %}
+
+                                            {% if form.school.address is defined %}
+                                                <div class="form-group">
+                                                        <label for="form_school_address" class="label">Adresse</label>
+                                                        {{ form_widget(form.school.address, {'attr': {'class': 'form-control', 'id': 'form_school_address', 'placeholder': 'Donner l\'adresse de l\'école'}}) }}
+                                                </div>
+                                            {% endif %}
+
+                                            {% if form.school.description is defined %}
+                                                <div class="form-group">
+                                                        <label for="form_school_description" class="label">Description</label>
+                                                        {{ form_widget(form.school.description, {'attr': {'class': 'form-control', 'id': 'form_school_description', 'placeholder': 'Décrivez-nous l\'école', 'rows':3}}) }}
+                                                </div>
+                                            {% endif %}
+
+                                            {% if form.school.logo is defined %}
+                                                <div class="form-group">
+                                                        <label for="form_school_logo" class="label">Logo (champ non requis)</label>
+                                                        {{ form_widget(form.school.logo, {'attr': {'class': 'form-control', 'id': 'form_school_logo', 'placeholder': 'Un logo caractérisant l\'école'}}) }}
+                                                </div>
+                                            {% endif %}
+{% endblock %}

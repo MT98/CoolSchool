@@ -1,0 +1,66 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Rôles - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Rôle</li>
+        {% if role is defined %}
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_services_roles_administrative_role_view', {'id': role.id}) }}"> Vue d'un role administratif </a></li>
+        {% endif %}
+{% endblock %}
+
+
+{% block animated_fade_in %}
+
+<div class="row">
+    <div class="col-sm-9">
+
+        <div class="card">
+                <div class="card-header">
+                        <strong>Vue d'un rôle administratif</strong>
+                </div>
+
+                <div class="card-block">
+                        <strong> Service </strong>: {{role.service.name}} <br/>
+                        <strong> Nom </strong>: {{role.name}} <br/>
+                        <strong> Code </strong>: {{role.code}} <br/>
+                        <strong> Statut </strong>: {% if role.isActive == true %} <span class="badge badge-success">Activé</span> {% elseif role.isActive == false %} <span class="badge badge-danger">Désactivé</span> {% endif %} <br/>
+                        <strong> {% if role.isActive == true %} Est {% else %} Etait {% endif %}rendu public </strong>: {% if role.published == true %} <span class="badge badge-success">Oui</span> {% elseif role.published == false %} <span class="badge badge-warning">Non</span> {% endif %} <br/>                       
+                        <strong> Nombre d'acteurs </strong>: {% if role.foroneuser == true %} Un seul {% elseif role.foroneuser == false %} Plusieurs {% endif %} <br/>
+                        <strong> Description </strong>: {% if role.description is not null %} {{role.description}} {% else %} aucune {% endif %}<br/>
+                        <strong> Rôles Qu'il administre</strong>: {% if role.managedRoles is not empty %}
+                                        {% for managedRole in role.managedRoles %}
+                                        {{managedRole.name}} {% if not loop.last %}, {% endif %}
+
+                                        {% endfor %}
+
+                                {% else %}
+                                        aucun
+
+                                {% endif %}
+                </div>
+                <span class="spacer-down"> </span>
+                <span class="spacer-down"> </span>
+                <div class="card-footer">                                        
+                            <a href="{{path('cs_platform_handling_services_roles_administrative_role_update', {'id': role.id})}}" class="btn btn-sm btn-warning">Modifier</a>
+                               {% if role.published == true %}
+                                        {% if role.isActive == true %}
+                                               <a href="{{path('cs_platform_handling_services_roles_administrative_role_disable', {'id': role.id})}}" class="btn btn-sm btn-danger">Désactiver</a>
+                                        {% elseif role.isActive == false %}
+                                                <a href="{{path('cs_platform_handling_services_roles_administrative_role_enable', {'id': role.id})}}" class="btn btn-sm btn-success">Réactiver</a>
+                                        {% endif %}
+                                {% elseif role.published == false %}
+                                               <a href="{{path('cs_platform_handling_services_roles_administrative_role_delete', {'id': role.id})}}" class="btn btn-sm btn-danger">Supprimer</a>
+                               {% endif %}                            
+                            <a class="btn btn-sm btn-secondary" href="{{path('cs_platform_handling_services_roles_administrative_role_viewAll')}}"><i class="fa fa-dot-circle-o"></i> Voir la liste</a>
+                </div>
+        </div>
+
+    </div>
+</div>
+
+                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}

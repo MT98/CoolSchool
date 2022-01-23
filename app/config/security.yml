@@ -1,0 +1,52 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+
+    # les encoders definissent comment vont être encoder les mot de passes
+    encoders:
+        CS\PlatformHandlingBundle\Entity\CoolSchoolEmployee: plaintext
+
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        coolschool_employee_provider:
+            entity:
+                class:    CS\PlatformHandlingBundle\Entity\CoolSchoolEmployee
+            
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        # Attention ce nom de pare-feu ne doit pas être modifier car il est utilisé en dure ailleurs 
+        # voir CS/CoreBundle/Services/AuthenticationEventListener on onSecurityAuthenticationFailure method 
+        main_for_administration:
+            pattern:    ^/Administration/
+            anonymous:  ~
+            form_login:
+                login_path:    /Administration/login
+                check_path:    /Administration/login_check
+                
+            logout:
+                path:    /Administration/logout
+                target:  /   
+
+            provider:    coolschool_employee_provider
+               
+
+
+    access_control:
+        - { path: ^/Administration/(login)|(Employee/ForgotCredentials.*)|(Employee/ConfirmAccount.*)|(forgot_credentials)$, roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/Administration/, roles: [IS_AUTHENTICATED_FULLY, IS_AUTHENTICATED_REMEMBERED]}
+
+
+
+            # activate different ways to authenticate
+
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            #form_login: ~

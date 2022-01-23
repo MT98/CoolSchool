@@ -1,0 +1,417 @@
+<?php
+
+namespace CS\CustomersPlatformBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * School
+ *
+ * @ORM\Table(name="school")
+ * @ORM\Entity(repositoryClass="CS\CustomersPlatformBundle\Repository\SchoolRepository")
+ */
+class School
+{
+    
+
+     /**
+     * @ORM\ManyToMany(targetEntity="CS\CustomersPlatformBundle\Entity\CustomerUser", inversedBy="schools")
+     * Attribut permettant de savoir quels utilisateurs travaillent dans cette école
+     */
+    private $customerUsers;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CS\CustomersPlatformBundle\Entity\Work", cascade={"persist"}, mappedBy="school")
+     */
+    private $works;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CS\PlatformHandlingBundle\Entity\Country", inversedBy="schools")
+     * @ORM\JoinColumn(nullable=false) 
+     */
+    private $country;
+
+    /**
+     * @ORM\OneToOne(targetEntity="CS\PlatformHandlingBundle\Entity\Image", cascade={"persist", "remove"})
+     *
+     */
+    private $logo;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="confirmed", type="boolean")
+     */
+    private $confirmed;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="acronym", type="string", length=255)
+     */
+    private $acronym;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text")
+     */
+    private $description;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="type", type="string", length=255)
+     */
+    private $type;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="levels", type="array")
+     */
+    private $levels;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address", type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @ORM\OneToMany(targetEntity="CS\CustomersPlatformBundle\Entity\Subscription",mappedBy="school")
+     * 
+     */
+   private $subscriptions;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return School
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set acronym
+     *
+     * @param string $acronym
+     *
+     * @return School
+     */
+    public function setAcronym($acronym)
+    {
+        $this->acronym = $acronym;
+
+        return $this;
+    }
+
+    /**
+     * Get acronym
+     *
+     * @return string
+     */
+    public function getAcronym()
+    {
+        return $this->acronym;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return School
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set type
+     *
+     * @param string $type
+     *
+     * @return School
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get type
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set level
+     *
+     * @param string $level
+     *
+     * @return School
+     */
+    public function setLevels($levels)
+    {
+        $this->levels = $levels;
+
+        return $this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return string
+     */
+    public function getLevels()
+    {
+        return $this->levels;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return School
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    public function __construct()
+    {
+        $this->setLevels(array());
+    }
+
+    /**
+     * Add subscription
+     *
+     * @param \CS\CustomersPlatformBundle\Entity\Subscription $subscription
+     *
+     * @return School
+     */
+    public function addSubscription(\CS\CustomersPlatformBundle\Entity\Subscription $subscription)
+    {
+        $this->subscriptions[] = $subscription;
+        $subscription->setSchool($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove subscription
+     *
+     * @param \CS\CustomersPlatformBundle\Entity\Subscription $subscription
+     */
+    public function removeSubscription(\CS\CustomersPlatformBundle\Entity\Subscription $subscription)
+    {
+        $this->subscriptions->removeElement($subscription);
+    }
+
+    /**
+     * Get subscriptions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getSubscriptions()
+    {
+        return $this->subscriptions;
+    }
+
+    /**
+     * Add work
+     *
+     * @param \CS\CustomersPlatformBundle\Entity\Work $work
+     *
+     * @return School
+     */
+    public function addWork(\CS\CustomersPlatformBundle\Entity\Work $work)
+    {
+        $this->works[] = $work;
+        $work->setSchool($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove work
+     *
+     * @param \CS\CustomersPlatformBundle\Entity\Work $work
+     */
+    public function removeWork(\CS\CustomersPlatformBundle\Entity\Work $work)
+    {
+        $this->works->removeElement($work);
+    }
+
+    /**
+     * Get works
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getWorks()
+    {
+        return $this->works;
+    }
+
+    /**
+     * Add customerUser
+     *
+     * @param \CS\CustomersPlatformBundle\Entity\CustomerUser $customerUser
+     *
+     * @return School
+     */
+    public function addCustomerUser(\CS\CustomersPlatformBundle\Entity\CustomerUser $customerUser)
+    {
+        $this->customerUsers[] = $customerUser;
+        $customerUser->addSchool($this);
+
+        return $this;
+    }
+
+    /**
+     * Remove customerUser
+     *
+     * @param \CS\CustomersPlatformBundle\Entity\CustomerUser $customerUser
+     */
+    public function removeCustomerUser(\CS\CustomersPlatformBundle\Entity\CustomerUser $customerUser)
+    {
+        $this->customerUsers->removeElement($customerUser);
+    }
+
+    /**
+     * Get customerUsers
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCustomerUsers()
+    {
+        return $this->customerUsers;
+    }
+
+    /**
+     * Set country
+     *
+     * @param \CS\PlatformHandlingBundle\Entity\Country $country
+     *
+     * @return School
+     */
+    public function setCountry(\CS\PlatformHandlingBundle\Entity\Country $country)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return \CS\PlatformHandlingBundle\Entity\Country
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param \CS\PlatformHandlingBundle\Entity\Image $logo
+     *
+     * @return School
+     */
+    public function setLogo(\CS\PlatformHandlingBundle\Entity\Image $logo = null)
+    {
+        $this->logo = $logo;
+
+        return $this;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return \CS\PlatformHandlingBundle\Entity\Image
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+}

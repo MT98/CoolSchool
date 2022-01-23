@@ -1,0 +1,45 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+
+    # les encoders definissent comment vont être encoder les mot de passes
+    encoders:
+        CS\PlatformHandlingBundle\Entity\CoolSchoolEmployee: plaintext
+
+
+    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    providers:
+        coolschool_employee_provider:
+            entity:
+                class:    CS\PlatformHandlingBundle\Entity\CoolSchoolEmployee
+                property: email
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        public_for_administration:
+            pattern:    ^/Administration/login$
+            anonymous:  true
+
+
+        main_for_administration:
+            pattern:    ^/Administration/
+            anonymous:  false
+            form_login:
+                login_path:    /Administration/login
+                check_path:    /Administration/login_check
+                
+            logout:
+                path:    /Administration/logout
+                target:  /Administration/login      
+            provider:    coolschool_employee_provider
+            # activate different ways to authenticate
+
+            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+            #http_basic: ~
+
+            # https://symfony.com/doc/current/security/form_login_setup.html
+            #form_login: ~

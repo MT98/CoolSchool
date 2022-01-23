@@ -1,0 +1,18 @@
+{% extends "CSPlatformHandlingBundle::layout.html.twig" %}
+
+{% block title %}  Services - {{parent()}} {% endblock %}
+
+{% block breadcrumb_rest %}
+        <li class="breadcrumb-item">Service</li>
+        <li class="breadcrumb-item active"> <a href="{{ path('cs_platform_handling_services_roles_administrative_service_add') }}"> Ajout de service administratif </a></li>
+{% endblock %}
+
+
+{% block animated_fade_in %}
+                   
+                    {{ include("CSPlatformHandlingBundle:ServicesAndRoles:formAdministrativeService.html.twig") }}
+                   
+                    <span class="spacer-down"> </span>
+                    <!--/.row-->
+
+{% endblock %}

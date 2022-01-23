@@ -1,0 +1,104 @@
+
+<!--
+ * GenesisUI - Bootstrap 4 Admin Template
+ * @version v1.8.1
+ * @link https://genesisui.com
+ * Copyright (c) 2017 creativeLabs Łukasz Holeczek
+ * @license Commercial
+ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="CoolSchool">
+    <meta name="author" content="Mohammed THIANDOUM">
+    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,AngularJS,Angular,Angular2,jQuery,CSS,HTML,RWD,Dashboard,Vue,Vue.js,React,React.js">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.png') }}">
+
+    <title> {% block title %} CoolSchool {% endblock %}</title>
+
+    <!-- Icons -->
+    <link href="{{ asset('css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/simple-line-icons.css') }}" rel="stylesheet">
+
+    <!-- Main styles for this application -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
+</head>
+
+<body class="app flex-row align-items-center">
+    <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card-group mb-0">
+                            <div class="card p-2">
+                                <div class="card-block">
+                                    {# errors from isometrics spam bundle #}
+                                    {% if form.vars.errors is not empty %}
+                                        <div class="alert alert-danger">{{ form_errors(form) }}</div>
+                                    {% endif %}
+
+                                    {# affichage du message flashbag #}
+                                    {% for message in app.session.flashbag.get('infoSuccess') %}
+                                        <div class="alert alert-info"> {{message}} </div>
+                                    
+                                    {% endfor %}
+                                    {% for message in app.session.flashbag.get('infoError') %}
+                                        <div class="alert alert-danger"> {{message}} </div>
+                                    {% endfor %}
+                                   
+                                    <h1>Infos de connexion oubliées?</h1>
+                                    <p class="text-muted">Remplissez ce formulaire!</p>
+
+                                    <form method="post">
+                                        {% if form.what is defined %}
+                                            <div class="input-group mb-1">
+                                                <span class="input-group-addon"><i class="icon-user"></i>
+                                                </span>
+                                                {{ form_widget(form.what, {'attr': {'class': 'form-control', 'id': 'what', 'placeholder': 'Qu\'avez-vous oublié?' }}) }}
+                                            </div>
+                                       
+                                        {% endif %}
+
+                                        {% if form.email is defined %}
+                                            <div class="input-group mb-2">
+                                                <span class="input-group-addon"><i class="icon-envelope-open"></i>
+                                                </span>
+                                                {{ form_widget(form.email, {'attr': {'class': 'form-control', 'id': 'email', 'placeholder': 'Renseignez votre Email ... ex:adjasarr@gmail.com'}}) }}
+                                            </div> 
+                                        {% endif %}
+                                        
+                    
+                                        <div class="row">
+                                            <div class="col-6">
+                                            {% if form.submit is defined %}
+                                                {{ form_widget(form.submit, {'label': 'Récupèrer', 'attr': {'class': 'btn btn-primary px-2', 'id': 'submit', 'value': 'Récupèrer'}}) }}
+                                            {% endif %}
+
+                                            {{ form_rest(form) }}
+                                            </div>
+                                           
+                                        </div>
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+    <!-- Bootstrap and necessary plugins -->
+    <script src="{{ asset('js/libs/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/libs/tether.min.js') }}"></script>
+    <script src="{{ asset('js/libs/bootstrap.min.js') }}"></script>
+
+
+</body>
+
+</html>

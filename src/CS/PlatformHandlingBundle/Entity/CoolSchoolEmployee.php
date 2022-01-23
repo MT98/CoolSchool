@@ -1,0 +1,795 @@
+<?php
+
+namespace CS\PlatformHandlingBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+
+/**
+ * CoolSchoolEmployee
+ *
+ * @ORM\Table(name="cool_school_employee")
+ * @ORM\Entity(repositoryClass="CS\PlatformHandlingBundle\Repository\CoolSchoolEmployeeRepository")
+ */
+class CoolSchoolEmployee implements AdvancedUserInterface, \Serializable
+{
+    /**
+     * @var bool
+     * To know if we can also use the email or only the username to process to authentification
+     * @ORM\Column(name="only_username_for_authentification", type="boolean")
+     */
+    private $onlyUsernameForAuthentification;
+
+    /**
+     * @var string
+     * @Gedmo\Slug(fields={"email"})
+     * @ORM\Column(name="confirmation_token", type="string", length=255, nullable=true)
+     */
+    private $confirmationToken;
+
+
+    /**
+     * @ORM\OneToOne(targetEntity="CS\PlatformHandlingBundle\Entity\Image", cascade={"persist", "remove"})
+     *
+     */
+    private $photo;
+
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CS\PlatformHandlingBundle\Entity\Country", inversedBy="employees")
+     * @ORM\JoinColumn(nullable=false) 
+     */
+    private $country;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="CS\PlatformHandlingBundle\Entity\AdministrativeRole", inversedBy="employees")
+     * C'est attribut correspond aux véritables rôles joués par l'employé
+     */
+    private $works;
+
+
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="roles", type="array", nullable=true)
+     * redefinition de l'attribut pour l'interface UserInterface
+     */
+    private $roles;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="salt", type="string", length=255, nullable=true)
+     */
+    private $salt;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="username", type="string", length=255, unique=true, nullable=true)
+     */
+    private $username;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=255)
+     */
+    private $password;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="registration_date", type="datetimetz", nullable=true)
+     */
+    private $registrationDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="expiration_date", type="datetimetz", nullable=true)
+     */
+    private $expirationDate;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="last_connection", type="datetimetz", nullable=true)
+     */
+    private $lastConnection;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated_at", type="datetimetz", nullable=true)
+     */
+    private $updatedAt;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="firstName", type="string", length=255)
+     */
+    private $firstName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="lastName", type="string", length=255)
+     */
+    private $lastName;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="expired", type="boolean")
+     */
+    private $expired;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="address", type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telephone", type="string", length=255, unique=true)
+     */
+    private $telephone;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set password
+     *
+     * @param string $password
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get password
+     *
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set firstName
+     *
+     * @param string $firstName
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getName()
+    {
+        return $this->getLastName().' '.$this->getFirstName();
+    }
+    
+    /**
+     * Get firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * Set lastName
+     *
+     * @param string $lastName
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * Get lastName
+     *
+     * @return string
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * Set expired
+     *
+     * @param boolean $expired
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setExpired($expired)
+    {
+        $this->expired = $expired;
+
+        return $this;
+    }
+
+    /**
+     * Get expired
+     *
+     * @return bool
+     */
+    public function getExpired()
+    {
+        return $this->expired;
+    }
+
+   
+    /**
+     * Set lastConnection
+     *
+     * @param \DateTime $lastConnection
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setLastConnection($lastConnection)
+    {
+        $this->lastConnection = $lastConnection;
+
+        return $this;
+    }
+
+    /**
+     * Get lastConnection
+     *
+     * @return \DateTime
+     */
+    public function getLastConnection()
+    {
+        return $this->lastConnection;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->setRoles(Array());
+        $this->setPassword($this->createPassword());
+        $this->setActive(false);
+        $this->setExpired(false);
+        $this->setRegistrationDate(new \DateTime());
+        $this->setOnlyUsernameForAuthentification(false);
+    }
+
+   
+    /**
+     * Set country
+     *
+     * @param \CS\PlatformHandlingBundle\Entity\Country $country
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setCountry(\CS\PlatformHandlingBundle\Entity\Country $country = null)
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    /**
+     * Get country
+     *
+     * @return \CS\PlatformHandlingBundle\Entity\Country
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * Set photo
+     *
+     * @param \CS\PlatformHandlingBundle\Entity\Image $photo
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setPhoto(\CS\PlatformHandlingBundle\Entity\Image $photo = null)
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return \CS\PlatformHandlingBundle\Entity\Image
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set telephone
+     *
+     * @param string $telephone
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setTelephone($telephone)
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * Get telephone
+     *
+     * @return string
+     */
+    public function getTelephone()
+    {
+        return $this->telephone;
+    }
+
+   
+
+    private function createPassword()
+    {
+        $password = "";
+
+        /* on random 10 chiffres ou lettres */
+        for($i=0; $i<10; $i++)
+        {
+            $choice = rand(1,3);
+            /* chiffre*/
+            if($choice == 1)
+            {
+                $password.= rand(0,9);
+            }elseif($choice == 2) /* lettres majuscules */
+            {
+                $number = rand(65,90);
+                /* On concaténe l'equivalent en caractére ASCII */
+                $password.= chr($number);
+            }elseif($choice == 3)
+            {
+                $number = rand(97,122);
+                /* On concaténe l'equivalent en caractére ASCII */
+                $password.= chr($number);
+            }
+        }
+
+        return $password;
+    }
+
+    /**
+     * Set confirmationToken
+     *
+     * @param string $confirmationToken
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setConfirmationToken($confirmationToken)
+    {
+        $this->confirmationToken = $confirmationToken;
+
+        return $this;
+    }
+
+    /**
+     * Get confirmationToken
+     *
+     * @return string
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * Get salt
+     *
+     * @return string
+     */
+    public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    /**
+     * redefinition de la methode getUsername() de la classe UserInterface
+     */
+    public function getUsername()
+    {
+        if($this->username == null)
+        {
+            return $this->getEmail();
+        }
+        return $this->username;
+    }
+
+    /**
+     * redefinition de la methode eraseCredentials() de la classe UserInterface
+     */
+    public function eraseCredentials()
+    {
+
+    }
+
+    /**
+     * redefinition de la methode getRoles() de la classe UserInterface
+     */
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    /**
+     * Set salt
+     *
+     * @param string $salt
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    /**
+     * Set roles
+     *
+     * @param array $roles
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Add work
+     *
+     * @param \CS\PlatformHandlingBundle\Entity\AdministrativeRole $work
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function addWork(\CS\PlatformHandlingBundle\Entity\AdministrativeRole $work)
+    {
+        $this->works[] = $work;
+        return $this;
+    }
+
+    /**
+     * Remove work
+     *
+     * @param \CS\PlatformHandlingBundle\Entity\AdministrativeRole $work
+     */
+    public function removeWork(\CS\PlatformHandlingBundle\Entity\AdministrativeRole $work)
+    {
+        $this->works->removeElement($work);
+    }
+
+    /**
+     * Get works
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getWorks()
+    {
+        return $this->works;
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->email,
+            $this->isActive,
+            $this->expired,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            $this->email,
+            $this->isActive,
+            $this->expired,
+            // see section on salt below
+            // $this->salt
+        ) = unserialize($serialized );
+    }
+
+    public function isAccountNonExpired()
+    {
+        return !($this->getExpired());
+    }
+
+    public function isAccountNonLocked()
+    {
+        return true;
+    }
+
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Set username
+     *
+     * @param string $username
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->isActive;
+    }
+
+
+
+    /**
+     * Set onlyUsernameForAuthentification
+     *
+     * @param boolean $onlyUsernameForAuthentification
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setOnlyUsernameForAuthentification($onlyUsernameForAuthentification)
+    {
+        $this->onlyUsernameForAuthentification = $onlyUsernameForAuthentification;
+
+        return $this;
+    }
+
+    /**
+     * Get onlyUsernameForAuthentification
+     *
+     * @return boolean
+     */
+    public function getOnlyUsernameForAuthentification()
+    {
+        return $this->onlyUsernameForAuthentification;
+    }
+
+    /**
+     * Set registrationDate
+     *
+     * @param \DateTime $registrationDate
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setRegistrationDate($registrationDate)
+    {
+        $this->registrationDate = $registrationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get registrationDate
+     *
+     * @return \DateTime
+     */
+    public function getRegistrationDate()
+    {
+        return $this->registrationDate;
+    }
+
+    /**
+     * Set expirationDate
+     *
+     * @param \DateTime $expirationDate
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setExpirationDate($expirationDate)
+    {
+        $this->expirationDate = $expirationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get expirationDate
+     *
+     * @return \DateTime
+     */
+    public function getExpirationDate()
+    {
+        return $this->expirationDate;
+    }
+
+    /**
+     * Set updatedAt
+     *
+     * @param \DateTime $updatedAt
+     *
+     * @return CoolSchoolEmployee
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedAt
+     *
+     * @return \DateTime
+     */
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+}

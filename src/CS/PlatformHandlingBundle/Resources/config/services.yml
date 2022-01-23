@@ -1,0 +1,16 @@
+services:
+#    cs_platform_handling.example:
+#        class: CS\PlatformHandlingBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+    CS\PlatformHandlingBundle\DataFixtures\:
+        resource: '../../DataFixtures'
+        tags: [doctrine.fixture.orm]
+
+
+    cs_platform_handling.email.mailer:
+      class: CS\PlatformHandlingBundle\Email\Mailer
+      arguments: 
+        - "@mailer"
+        - {'employee': "%confirmationEmployeeAccountLink%", 'forgotCredentialsForAdministration': "%forgotCredentialsForAdministration%"}
+        - "%mailingFrom%"
